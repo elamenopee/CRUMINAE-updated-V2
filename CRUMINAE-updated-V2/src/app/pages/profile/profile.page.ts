@@ -128,8 +128,8 @@ export class ProfilePage implements OnInit {
     this.ui.toast('Profile saved', 'success');
   }
 
-  logout(): void {
-    this.auth.logout();
+  async logout(): Promise<void> {
+    await this.auth.logout();
     this.profilePhoto = '';
     this.showSettings = false;
     this.showEditProfile = false;

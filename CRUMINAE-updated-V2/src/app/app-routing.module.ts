@@ -27,6 +27,8 @@ const routes: Routes = [
         .then(m => m.Login)
   },
 
+  { path: 'security', loadComponent: () => import('./pages/security/security').then(m => m.Security) },
+
   {
     path: 'signup',
     loadComponent: () =>

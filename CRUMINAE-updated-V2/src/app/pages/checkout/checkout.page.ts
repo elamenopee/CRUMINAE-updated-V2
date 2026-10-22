@@ -18,6 +18,10 @@ import { OrderService } from '../../core/order.service';
 import { ProfileService } from '../../core/profile.service';
 import { UiService } from '../../core/ui.service';
 
+import { ContactService } from '../../core/contact.service';
+import { LocalAuthService } from '../../core/local-auth';
+import { normalizeMobile, validateContact } from '../../core/contact';
+
 type PaymentMethod =
   | 'cod'
   | 'pickup'
@@ -92,6 +96,49 @@ export class CheckoutPage {
   private profileSvc = inject(ProfileService);
   private router = inject(Router);
   private ui = inject(UiService);
+
+  private contacts = inject(ContactService);
+  private auth = inject(LocalAuthService);
+  contactName = '';
+  contactPhone = '';
+  contactError = '';
+  contactNotice = '';
+  contactLoading = false;
+  private contactEdited = false;
+  private contactLoadId = 0;
+
+  async ionViewWillEnter(): Promise<void> {
+    const loadId = ++this.contactLoadId;
+    this.contactName = ''; this.contactPhone = '';
+    this.contactEdited = false; this.contactError = ''; this.contactNotice = '';
+    this.contactLoading = true;
+    try {
+      await this.auth.ready;
+      const uid = this.auth.firebase.currentUser?.uid;
+      const contact = await this.contacts.load();
+      if (loadId !== this.contactLoadId || this.contactEdited || this.auth.firebase.currentUser?.uid !== uid) return;
+      this.contactName = contact?.name || this.auth.firebase.currentUser?.displayName || '';
+      this.contactPhone = contact?.phone || '';
+    } catch {
+      if (loadId === this.contactLoadId) this.contactNotice = 'Saved contact could not be loaded. Please enter the details for this order.';
+    } finally {
+      if (loadId === this.contactLoadId) this.contactLoading = false;
+    }
+  }
+  ionViewWillLeave(): void { ++this.contactLoadId; }
+  onContactChange(): void {
+    this.contactEdited = true;
+    this.contactError = '';
+    this.termsConfirmedForNextAttempt = false;
+  }
+  private checkContact(): boolean {
+    this.contactError = validateContact(this.contactName, this.contactPhone);
+    if (this.contactError) {
+      document.getElementById(this.contactName.trim() ? 'checkout-phone' : 'checkout-contact-name')?.focus();
+      return false;
+    }
+    return true;
+  }
 
   draft = this.cart.draft;
 
@@ -305,6 +352,7 @@ export class CheckoutPage {
   // Only online methods open a floating modal.
 
   openOnlinePaymentPicker(): void {
+    if (!this.checkContact()) return;
     this.showPaymentPicker = true;
   }
 
@@ -313,6 +361,7 @@ export class CheckoutPage {
   }
 
   selectPayment(method: PaymentMethod): void {
+    if (!this.checkContact()) return;
     if (
       method === 'cod' &&
       this.draft.delivery.mode !== 'delivery'
@@ -573,6 +622,7 @@ export class CheckoutPage {
 
   // PLACE ORDER
   async place(): Promise<void> {
+    if (!this.checkContact()) return;
     if (!this.termsConfirmedForNextAttempt) {
       this.termsAccepted = false;
       this.showTermsModal = true;
@@ -680,6 +730,7 @@ export class CheckoutPage {
     const order: Order = {
       id: this.orders.nextId(),
       placedAt: Date.now(),
+      contact: { name: this.contactName.trim(), phone: normalizeMobile(this.contactPhone)! },
       lines: JSON.parse(JSON.stringify(this.lines)),
       subtotal: this.net + this.boxSavings,
       boxSavings: this.boxSavings,

@@ -118,6 +118,25 @@
 
     </div>
 
+    <section aria-labelledby="checkout-contact-title" class="checkout-contact">
+      <h2 id="checkout-contact-title" class="section-title">Contact Details</h2>
+      <div class="schedule-card">
+        <p class="muted small">Who can we contact about this order? Required for delivery and pickup.</p>
+        <label class="field-label" for="checkout-contact-name">Contact person</label>
+        <input class="contact-input" id="checkout-contact-name" type="text" autocomplete="name"
+          maxlength="100" required [(ngModel)]="contactName" (ngModelChange)="onContactChange()"
+          placeholder="Full name" aria-describedby="checkout-contact-error" />
+        <label class="field-label" for="checkout-phone">Mobile number</label>
+        <input class="contact-input" id="checkout-phone" type="tel" inputmode="tel" autocomplete="tel"
+          maxlength="25" required [(ngModel)]="contactPhone" (ngModelChange)="onContactChange()"
+          placeholder="0917 123 4567" aria-describedby="checkout-contact-help checkout-contact-error" />
+        <p id="checkout-contact-help" class="muted small">Use 09XXXXXXXXX or +639XXXXXXXXX. Changes here apply to this order.</p>
+        <p *ngIf="contactLoading" class="muted small" role="status">Loading saved contact…</p>
+        <p *ngIf="contactNotice" class="muted small" role="status">{{ contactNotice }}</p>
+        <p id="checkout-contact-error" class="schedule-error" role="alert">{{ contactError }}</p>
+      </div>
+    </section>
+
     <!-- PAYMENT METHOD - VISIBLE DIRECTLY -->
     <h2 class="section-title">Payment Method</h2>
 
@@ -530,6 +549,9 @@
 
       </div>
 
+      <div class="sum-row" *ngIf="contactName || contactPhone">
+        <span>Contact</span><span>{{ contactName }}<br />{{ contactPhone }}</span>
+      </div>
       <div class="sum-row">
         <span>Payment</span>
         <span>{{ paymentLabel }}</span>

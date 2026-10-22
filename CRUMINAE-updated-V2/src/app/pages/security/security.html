@@ -1,0 +1,43 @@
+<ion-content class="login-content">
+  <main class="login-container">
+    <div class="brand-row"><img src="assets/icon/logo.png" alt="Cruminae" /><span class="brand-name">Cruminae</span></div>
+    <header class="login-header"><h1>Account security</h1><p>Protect your account with two-step verification.</p></header>
+    <p *ngIf="loading" role="status">Loading your account…</p>
+    <div class="form-card" *ngIf="!loading" [attr.aria-busy]="busy">
+      <section *ngIf="!verifiedEmail">
+        <h2>Verify your email</h2><p class="mfa-copy">Send a verification link to {{ auth.currentUser?.email }}. Open the link, then return here.</p>
+        <button class="login-button" (click)="sendEmail()" [disabled]="busy">Send verification email</button>
+        <button class="secondary-button" (click)="checkEmail()" [disabled]="busy">I have verified my email</button>
+      </section>
+      <section *ngIf="verifiedEmail">
+        <h2>Your verification methods</h2>
+        <p class="mfa-copy" *ngIf="!factors.length">No method added yet. Choose one below.</p>
+        <ul><li *ngFor="let factor of factors">{{ factor.factorId === 'totp' ? 'Authenticator app' : 'Phone' }} — {{ factor.displayName }}</li></ul>
+        <div class="form-group"><label for="setup-method">Add a method</label><select id="setup-method" [(ngModel)]="mode" (ngModelChange)="changeMode()" [disabled]="busy"><option value="totp">Google Authenticator</option><option value="sms">Text message</option></select></div>
+        <section *ngIf="mode === 'totp'">
+          <button class="login-button" (click)="setupTotp()" [disabled]="busy">{{ secret ? 'Generate a new setup key' : 'Set up Google Authenticator' }}</button>
+          <div *ngIf="secret">
+            <p class="mfa-copy">In Google Authenticator, tap +, then scan this QR code. Alternatively enter the key below and choose Time based. Keep this key private.</p>
+            <img class="setup-qr" [src]="qr" alt="Scan this code using Google Authenticator" />
+            <code class="setup-secret">{{ secret.secretKey }}</code>
+          </div>
+        </section>
+        <section *ngIf="mode === 'sms'">
+          <div class="form-group"><label for="phone">Mobile number</label><div class="input-wrapper"><input id="phone" type="tel" autocomplete="tel" placeholder="+639171234567" [(ngModel)]="phone" [disabled]="busy || !!verificationId" /></div></div>
+          <label class="mfa-copy consent"><input type="checkbox" [(ngModel)]="consent" [disabled]="busy" /> I agree to receive verification texts. Google uses phone numbers for spam and abuse prevention across its services.</label>
+          <button class="secondary-button" (click)="sendSms()" [disabled]="busy || !consent">{{ verificationId ? 'Resend code' : 'Send verification code' }}</button>
+          <button *ngIf="verificationId" class="secondary-button" (click)="changeMode()" [disabled]="busy">Change phone number</button>
+        </section>
+        <form *ngIf="secret || verificationId" (ngSubmit)="enroll()">
+          <div class="form-group"><label for="setup-code">Six-digit verification code</label><div class="input-wrapper"><input id="setup-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required [(ngModel)]="code" [disabled]="busy" /></div></div>
+          <button class="login-button" [disabled]="busy">{{ busy ? 'Please wait…' : 'Verify and enable' }}</button>
+        </form>
+      </section>
+      <div id="setup-recaptcha"></div>
+      <p class="error-message" *ngIf="error" role="alert">{{ error }}</p>
+      <p class="mfa-copy" *ngIf="notice" role="status">{{ notice }}</p>
+      <button class="secondary-button" (click)="logout()" [disabled]="busy">Sign out</button>
+      <a class="back-link" *ngIf="factors.length" routerLink="/pages/dashboard">Continue to dashboard →</a>
+    </div>
+  </main>
+</ion-content>

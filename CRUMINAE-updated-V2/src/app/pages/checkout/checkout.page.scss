@@ -877,3 +877,10 @@ ion-modal.cruminae-terms-modal::part(content) {
 .terms-consent-row ion-checkbox { flex: 0 0 auto; --checkbox-background-checked: #c985a0; --border-color-checked: #c985a0; }
 .terms-modal-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 8px; }
 .terms-modal-actions ion-button:last-child { --background: #c985a0; --color: #fff; font-weight: 700; }
+
+.checkout-contact .contact-input {
+  display: block; width: 100%; min-height: 50px; margin: 8px 0 16px;
+  padding: 12px 14px; border: 1px solid #dfcbbd; border-radius: 12px;
+  background: #fffdfb; color: #593d30; font: inherit; font-size: 16px;
+}
+.checkout-contact .contact-input:focus { outline: 2px solid #a47a16; outline-offset: 2px; }

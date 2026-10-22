@@ -22,6 +22,7 @@
             <strong>{{ o.total | peso }}</strong>
           </div>
           <p class="order-items">{{ summary(o) }}</p>
+          <p class="muted small" *ngIf="o.contact">Contact: {{ o.contact.name }} · {{ o.contact.phone }}</p>
 
           <ng-container *ngIf="{ st: svc.stage(o) } as s">
             <div class="tracker">

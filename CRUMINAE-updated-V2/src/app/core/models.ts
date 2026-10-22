@@ -34,6 +34,8 @@ export interface CheckoutDraft { gift: GiftInfo; delivery: DeliveryInfo; crumbBl
 export interface Order {
   id: string;
   placedAt: number;
+  /** Optional for historical orders; required by checkout for all new orders. */
+  contact?: { name: string; phone: string; };
   lines: CartLine[];
   subtotal: number;
   boxSavings: number;

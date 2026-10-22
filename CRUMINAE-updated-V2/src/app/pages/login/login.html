@@ -1,102 +1,214 @@
-
 <ion-content class="login-content">
-  <div class="login-container">
-
-    <!-- Decorative background -->
-    <div class="pink-blob blob-top"></div>
-    <div class="pink-blob blob-bottom"></div>
-
+  <main class="login-container">
     <!-- Brand -->
     <div class="brand-row">
-      <img src="assets/icon/logo.png" alt="Cruminae Logo" />
+      <img src="assets/icon/logo.png" alt="Cruminae logo" />
+
       <div class="brand-copy">
         <span class="brand-name">Cruminae</span>
-        <span class="brand-tagline">COOKIES THAT FEEL LIKE HOME</span>
+        <span class="brand-tagline">
+          COOKIES THAT FEEL LIKE HOME
+        </span>
       </div>
     </div>
 
-    <!-- Cookie illustration -->
     <div class="cookie-decoration" aria-hidden="true">
       <span class="cookie-main">🍪</span>
-      <span class="sparkle sparkle-one">✦</span>
-      <span class="sparkle sparkle-two">✧</span>
-      <span class="sparkle sparkle-three">✦</span>
     </div>
 
-    <!-- Welcome -->
-    <div class="login-header">
+    <header class="login-header">
       <span class="eyebrow">A LITTLE SWEETNESS AWAITS</span>
-      <h1>Welcome <span>Back!</span></h1>
-      <p>Log in to your account and continue your sweet journey.</p>
-    </div>
 
-    <!-- Login form -->
-    <div class="form-card">
-      <form (ngSubmit)="login()">
+      <h1>
+        {{ resolver ? 'Verify it’s you' : 'Welcome Back!' }}
+      </h1>
 
+      <p>
+        {{
+          resolver
+            ? 'Complete verification to access your account.'
+            : 'Sign in to continue your sweet journey.'
+        }}
+      </p>
+    </header>
+
+    <div class="form-card" [attr.aria-busy]="busy">
+      <!-- Password sign-in -->
+      <form *ngIf="!resolver" (ngSubmit)="login()">
         <div class="form-group">
-          <label for="login-email">Email Address</label>
+          <label for="login-email">Email address</label>
+
           <div class="input-wrapper">
-            <ion-icon name="mail-outline"></ion-icon>
             <input
               id="login-email"
-              type="email"
               name="email"
-              [(ngModel)]="email"
+              type="email"
+              autocomplete="username"
               placeholder="Enter your email"
-              autocomplete="email"
               required
+              [(ngModel)]="email"
+              [disabled]="busy"
             />
           </div>
         </div>
 
         <div class="form-group">
           <label for="login-password">Password</label>
+
           <div class="input-wrapper">
-            <ion-icon name="lock-closed-outline"></ion-icon>
             <input
               id="login-password"
-              [type]="showPassword ? 'text' : 'password'"
               name="password"
-              [(ngModel)]="password"
-              placeholder="Enter your password"
+              [type]="showPassword ? 'text' : 'password'"
               autocomplete="current-password"
+              placeholder="Enter your password"
               required
+              [(ngModel)]="password"
+              [disabled]="busy"
             />
 
             <button
               type="button"
               class="password-toggle"
               (click)="showPassword = !showPassword"
-              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
-              <ion-icon
-                [name]="showPassword ? 'eye-off-outline' : 'eye-outline'">
-              </ion-icon>
+              [disabled]="busy"
+              [attr.aria-label]="
+                showPassword ? 'Hide password' : 'Show password'
+              "
+            >
+              {{ showPassword ? 'Hide' : 'Show' }}
             </button>
           </div>
         </div>
 
-        <p class="error-message" *ngIf="error" role="alert">
-          {{ error }}
-        </p>
-
-        <button type="submit" class="login-button">
-          Log In <span aria-hidden="true">→</span>
+        <!-- Real Firebase password reset -->
+        <button
+          type="button"
+          class="forgot-password"
+          (click)="resetPassword()"
+          [disabled]="busy"
+        >
+          Forgot password?
         </button>
 
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="busy"
+        >
+          {{ busy ? 'Please wait…' : 'Continue →' }}
+        </button>
       </form>
 
-      <div class="signup-link">
+      <!-- MFA sign-in -->
+      <form *ngIf="resolver" (ngSubmit)="verify()">
+        <div class="form-group">
+          <label for="verification-method">
+            Verification method
+          </label>
+
+          <select
+            id="verification-method"
+            name="factor"
+            [(ngModel)]="factorIndex"
+            (ngModelChange)="selectFactor()"
+            [disabled]="busy"
+          >
+            <option
+              *ngFor="let hint of resolver.hints; let i = index"
+              [ngValue]="i"
+            >
+              {{
+                hint.factorId === 'totp'
+                  ? 'Authenticator app'
+                  : 'Text message'
+              }}
+              —
+              {{ hint.displayName || ('Method ' + (i + 1)) }}
+            </option>
+          </select>
+        </div>
+
+        <p class="mfa-copy">
+          {{
+            isSms
+              ? 'Request a code sent to your registered mobile number.'
+              : 'Open Google Authenticator and enter your current Cruminae code.'
+          }}
+        </p>
+
+        <button
+          *ngIf="isSms"
+          type="button"
+          class="secondary-button"
+          (click)="sendSms()"
+          [disabled]="busy"
+        >
+          {{ verificationId ? 'Resend code' : 'Send code' }}
+        </button>
+
+        <div class="form-group">
+          <label for="verification-code">
+            Six-digit verification code
+          </label>
+
+          <div class="input-wrapper">
+            <input
+              id="verification-code"
+              name="code"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              pattern="[0-9]{6}"
+              maxlength="6"
+              placeholder="000000"
+              required
+              [(ngModel)]="code"
+              [disabled]="busy"
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="busy || (isSms && !verificationId)"
+        >
+          {{ busy ? 'Verifying…' : 'Verify and log in' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="back()"
+          [disabled]="busy"
+        >
+          Back to sign in
+        </button>
+      </form>
+
+      <!-- Firebase reCAPTCHA -->
+      <div id="login-recaptcha"></div>
+
+      <!-- Messages remain visible on both screens -->
+      <p *ngIf="error" class="error-message" role="alert">
+        {{ error }}
+      </p>
+
+      <p *ngIf="notice" class="notice-message" role="status">
+        {{ notice }}
+      </p>
+
+      <div class="signup-link" *ngIf="!resolver">
         Don't have an account?
         <a routerLink="/signup">Sign Up</a>
       </div>
     </div>
 
-    <a routerLink="/pages/dashboard" class="back-link">
-      <span aria-hidden="true">←</span> Continue as Guest
+    <a class="back-link" routerLink="/pages/dashboard">
+      ← Continue as Guest
     </a>
 
     <p class="bottom-note">Baked with love, just for you ♡</p>
-
-  </div>
+  </main>
 </ion-content>

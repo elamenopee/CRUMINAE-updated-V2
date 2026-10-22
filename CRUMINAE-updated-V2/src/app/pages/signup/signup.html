@@ -69,13 +69,23 @@
             <input
               id="signup-email"
               type="email"
-              name="email"
+              name="email" [disabled]="busy || !!createdUid"
               [(ngModel)]="email"
               placeholder="Enter your email"
               autocomplete="email"
               required
             />
           </div>
+        </div>
+
+        <div class="form-group">
+          <label for="signup-phone">Mobile Number</label>
+          <div class="input-wrapper">
+            <input id="signup-phone" type="tel" inputmode="tel" name="phone"
+              [(ngModel)]="phone" placeholder="0917 123 4567" autocomplete="tel"
+              maxlength="25" required [disabled]="busy" aria-describedby="signup-phone-help" />
+          </div>
+          <p id="signup-phone-help" class="password-hint">For order updates and delivery or pickup coordination. Use 09XXXXXXXXX or +639XXXXXXXXX.</p>
         </div>
 
         <!-- Password -->
@@ -88,7 +98,7 @@
             <input
               id="signup-password"
               [type]="showPassword ? 'text' : 'password'"
-              name="password"
+              name="password" [disabled]="busy || !!createdUid"
               [(ngModel)]="password"
               placeholder="At least 8 characters"
               autocomplete="new-password"
@@ -117,7 +127,7 @@
             <input
               id="signup-confirm"
               [type]="showPassword ? 'text' : 'password'"
-              name="confirmPassword"
+              name="confirmPassword" [disabled]="busy || !!createdUid"
               [(ngModel)]="confirmPassword"
               placeholder="Re-enter your password"
               autocomplete="new-password"
@@ -138,8 +148,8 @@
         </p>
 
         <!-- Submit -->
-        <button type="submit" class="signup-button">
-          Create Account
+        <button type="submit" class="signup-button" [disabled]="busy">
+          {{ busy ? 'Saving…' : (createdUid ? 'Save contact and continue' : 'Create Account') }}
           <span aria-hidden="true">→</span>
         </button>
 

@@ -28,8 +28,8 @@ export class AppComponent {
 
   private authRouter = inject(Router);
 
-  logout(): void {
-    this.auth.logout();
+  async logout(): Promise<void> {
+    await this.auth.logout();
 
     this.authRouter.navigateByUrl('/login', {
       replaceUrl: true
