@@ -1,0 +1,282 @@
+<app-page-header title="My Profile"></app-page-header>
+
+<ion-content class="cm-content cr-profile">
+
+  <!-- GUEST MODE -->
+  <div class="guest-profile" *ngIf="!auth.isLoggedIn">
+
+    <div class="guest-avatar">
+      <ion-icon name="person-outline"></ion-icon>
+    </div>
+
+    <h2>Welcome to Cruminae!</h2>
+
+    <p>
+      Sign in or create an account to manage your profile,
+      save allergen preferences, earn loyalty crumbs,
+      and place orders for delivery.
+    </p>
+
+    <ion-button
+      expand="block"
+      shape="round"
+      routerLink="/login">
+      Log In
+    </ion-button>
+
+    <ion-button
+      expand="block"
+      shape="round"
+      fill="outline"
+      routerLink="/signup">
+      Create Account
+    </ion-button>
+
+  </div>
+
+  <!-- LOGGED-IN USER -->
+  <ng-container *ngIf="auth.isLoggedIn">
+
+    <!-- PROFILE HEADER -->
+    <section class="profile-header">
+
+      <div class="avatar-container">
+
+        <div class="profile-avatar">
+          <img
+            *ngIf="profilePhoto"
+            [src]="profilePhoto"
+            alt="Profile photo" />
+
+          <ion-icon
+            *ngIf="!profilePhoto"
+            name="person-outline">
+          </ion-icon>
+        </div>
+
+        <label class="change-photo">
+          <ion-icon name="camera-outline"></ion-icon>
+          <input
+            type="file"
+            accept="image/*"
+            (change)="uploadPhoto($event)"
+            hidden />
+        </label>
+
+      </div>
+
+      <h2>{{ userName }}</h2>
+      <p>{{ userEmail }}</p>
+
+      <button
+        class="settings-button"
+        type="button"
+        (click)="showSettings = !showSettings">
+        <ion-icon name="settings-outline"></ion-icon>
+        Settings
+      </button>
+
+    </section>
+
+    <!-- LOYALTY REWARDS -->
+    <section class="loyalty-card" *ngIf="state$ | async as s">
+
+      <div class="loyalty-top">
+        <div>
+          <p class="muted">Your loyalty rewards</p>
+
+          <h2>
+            {{ s.balance }}
+            <small>crumbs</small>
+          </h2>
+        </div>
+
+        <span class="tier-pill">
+          {{ loyalty.tier(s.lifetime).emoji }}
+          {{ loyalty.tier(s.lifetime).name }}
+        </span>
+      </div>
+
+      <ion-progress-bar
+        [value]="loyalty.progress(s.lifetime) / 100">
+      </ion-progress-bar>
+
+      <p
+        class="muted small"
+        *ngIf="loyalty.nextTier(s.lifetime) as next; else top">
+        {{ next.min - s.lifetime }}
+        more crumbs to reach {{ next.name }}
+      </p>
+
+      <ng-template #top>
+        <p class="muted small">
+          You've reached the top tier.
+        </p>
+      </ng-template>
+
+      <p class="muted small">
+        Earn 1 crumb for every ₱10.
+        Redeem 100 crumbs for ₱50 off at checkout.
+      </p>
+
+    </section>
+
+    <!-- ACCOUNT SHORTCUTS -->
+    <section class="account-menu">
+
+      <h2 class="section-title">My Account</h2>
+
+      <button
+        type="button"
+        class="account-option"
+        (click)="showEditProfile = !showEditProfile">
+        <ion-icon name="person-outline"></ion-icon>
+        <span>Edit Profile</span>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+
+      <a routerLink="/pages/orders" class="account-option">
+        <ion-icon name="bag-handle-outline"></ion-icon>
+        <span>My Orders</span>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </a>
+
+      <a routerLink="/pages/favorites" class="account-option">
+        <ion-icon name="heart-outline"></ion-icon>
+        <span>Favorites</span>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </a>
+
+      <button
+        type="button"
+        class="account-option"
+        (click)="showSettings = !showSettings">
+        <ion-icon name="settings-outline"></ion-icon>
+        <span>Settings & Allergen Preferences</span>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+
+    </section>
+
+    <!-- EDIT PROFILE -->
+    <section class="edit-profile-section" *ngIf="showEditProfile">
+
+      <h2 class="section-title">Edit Profile</h2>
+
+      <ion-item lines="none" class="cm-field">
+        <ion-input
+          label="Full name"
+          labelPlacement="floating"
+          [(ngModel)]="form.name">
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="cm-field">
+        <ion-input
+          label="Email"
+          type="email"
+          labelPlacement="floating"
+          [(ngModel)]="form.email">
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="cm-field">
+        <ion-input
+          label="Phone"
+          type="tel"
+          labelPlacement="floating"
+          [(ngModel)]="form.phone">
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="cm-field">
+        <ion-input
+          label="Delivery address"
+          labelPlacement="floating"
+          [(ngModel)]="form.address">
+        </ion-input>
+      </ion-item>
+
+      <ion-button
+        expand="block"
+        shape="round"
+        class="cm-cta"
+        (click)="save()">
+        Save Changes
+      </ion-button>
+
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="settings-section" *ngIf="showSettings">
+
+      <h2 class="section-title">Settings</h2>
+
+      <h3>Allergen Preferences</h3>
+
+      <p class="muted small">
+        Select ingredients you want to avoid.
+        Cookies containing these ingredients will be hidden
+        by default in the product list.
+      </p>
+
+      <div class="chip-row">
+        <ion-chip
+          *ngFor="let a of allergens"
+          [outline]="!form.avoid.includes(a)"
+          [color]="form.avoid.includes(a) ? 'primary' : 'tertiary'"
+          (click)="toggle(a)">
+          <ion-label>{{ a }}</ion-label>
+        </ion-chip>
+      </div>
+
+      <ion-button
+        expand="block"
+        shape="round"
+        class="cm-cta"
+        (click)="save()">
+        Save Preferences
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="danger"
+        (click)="logout()">
+        Log Out
+      </ion-button>
+
+    </section>
+
+    <!-- CRUMB ACTIVITY -->
+    <ng-container *ngIf="state$ | async as s">
+
+      <h2 class="section-title" *ngIf="s.history.length">
+        Crumb Activity
+      </h2>
+
+      <ion-list
+        lines="none"
+        class="history"
+        *ngIf="s.history.length">
+
+        <ion-item *ngFor="let h of s.history">
+          <ion-label>
+            <h3>{{ h.text }}</h3>
+            <p>{{ h.date | date:'MMM d, h:mm a' }}</p>
+          </ion-label>
+
+          <ion-note
+            slot="end"
+            [color]="h.delta > 0 ? 'success' : 'medium'">
+            {{ h.delta > 0 ? '+' : '' }}{{ h.delta }}
+          </ion-note>
+        </ion-item>
+
+      </ion-list>
+
+    </ng-container>
+
+  </ng-container>
+
+</ion-content>

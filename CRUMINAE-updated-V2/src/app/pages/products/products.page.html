@@ -1,0 +1,194 @@
+
+<app-page-header title="Our Products"></app-page-header>
+
+<ion-content class="cm-content">
+
+  <!-- SEARCH BAR -->
+  <ion-searchbar
+    [(ngModel)]="query"
+    placeholder="Search flavors"
+    class="cm-search">
+  </ion-searchbar>
+
+  <!-- FILTER BUTTON -->
+  <div class="filter-block">
+    <button
+      type="button"
+      class="cr-filter-trigger"
+      (click)="openFilter()">
+
+      <span class="cr-filter-trigger-left">
+        <ion-icon name="options-outline"></ion-icon>
+        Sort &amp; Filter
+      </span>
+
+      <span class="cr-filter-trigger-right">
+        {{ selectedFilterLabel }}
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </span>
+
+    </button>
+  </div>
+
+  <!-- PRODUCT LIST -->
+  <ng-container *ngIf="list as items">
+
+    <p class="muted small">
+      {{ items.length }}
+      {{ items.length === 1 ? 'product' : 'products' }}
+    </p>
+
+    <div class="cookie-grid" *ngIf="items.length; else none">
+      <app-cookie-card
+        *ngFor="let cookie of items"
+        [cookie]="cookie">
+      </app-cookie-card>
+    </div>
+
+    <ng-template #none>
+      <div class="empty">
+        <span>🔍</span>
+        <h3>No products match</h3>
+        <p>Try another search or choose All products.</p>
+
+        <ion-button
+          fill="outline"
+          shape="round"
+          (click)="clear()">
+          Clear filters
+        </ion-button>
+      </div>
+    </ng-template>
+
+  </ng-container>
+
+</ion-content>
+
+<!-- CUSTOM MOBILE FILTER SHEET -->
+<div
+  class="cr-filter-overlay"
+  *ngIf="filterOpen"
+  (click)="closeFilter()">
+
+  <section
+    class="cr-filter-sheet"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Sort and filter products"
+    (click)="$event.stopPropagation()">
+
+    <div class="cr-sheet-handle"></div>
+
+    <div class="cr-sheet-header">
+      <div>
+        <span class="cr-sheet-eyebrow">
+          CRUMINAE COLLECTION
+        </span>
+
+        <h2>Find your perfect cookie</h2>
+        <p>Choose a category or sorting preference</p>
+      </div>
+
+      <button
+        type="button"
+        class="cr-sheet-close"
+        aria-label="Close filters"
+        (click)="closeFilter()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </div>
+
+    <div class="cr-sheet-options">
+
+      <p class="cr-option-heading">COLLECTION</p>
+
+      <button
+        type="button"
+        class="cr-filter-option"
+        [class.active]="pendingSort === 'all'"
+        (click)="pendingSort = 'all'">
+        <span>All products</span>
+        <ion-icon
+          [name]="pendingSort === 'all'
+            ? 'checkmark-circle'
+            : 'ellipse-outline'">
+        </ion-icon>
+      </button>
+
+      <button
+        type="button"
+        class="cr-filter-option"
+        *ngFor="let category of categories"
+        [class.active]="pendingSort === 'category:' + category"
+        (click)="pendingSort = 'category:' + category">
+        <span>{{ category }}</span>
+        <ion-icon
+          [name]="pendingSort === 'category:' + category
+            ? 'checkmark-circle'
+            : 'ellipse-outline'">
+        </ion-icon>
+      </button>
+
+      <p class="cr-option-heading">SORT BY</p>
+
+      <button
+        type="button"
+        class="cr-filter-option"
+        [class.active]="pendingSort === 'priceAsc'"
+        (click)="pendingSort = 'priceAsc'">
+        <span>Price: low to high</span>
+        <ion-icon
+          [name]="pendingSort === 'priceAsc'
+            ? 'checkmark-circle'
+            : 'ellipse-outline'">
+        </ion-icon>
+      </button>
+
+      <button
+        type="button"
+        class="cr-filter-option"
+        [class.active]="pendingSort === 'priceDesc'"
+        (click)="pendingSort = 'priceDesc'">
+        <span>Price: high to low</span>
+        <ion-icon
+          [name]="pendingSort === 'priceDesc'
+            ? 'checkmark-circle'
+            : 'ellipse-outline'">
+        </ion-icon>
+      </button>
+
+      <button
+        type="button"
+        class="cr-filter-option"
+        [class.active]="pendingSort === 'name'"
+        (click)="pendingSort = 'name'">
+        <span>Name: A–Z</span>
+        <ion-icon
+          [name]="pendingSort === 'name'
+            ? 'checkmark-circle'
+            : 'ellipse-outline'">
+        </ion-icon>
+      </button>
+
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="cr-sheet-footer">
+      <button
+        type="button"
+        class="cr-reset-button"
+        (click)="pendingSort = 'all'">
+        Reset
+      </button>
+
+      <button
+        type="button"
+        class="cr-apply-button"
+        (click)="applyFilter()">
+        Apply filter
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </button>
+    </div>
+
+  </section>
+</div>

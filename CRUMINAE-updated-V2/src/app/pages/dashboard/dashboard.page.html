@@ -1,0 +1,338 @@
+<app-page-header title="Dashboard"></app-page-header>
+
+<ion-content
+  class="cm-content cr-dashboard"
+  [scrollY]="true">
+
+  <!-- =====================================
+       PREMIUM HERO SLIDESHOW
+       ===================================== -->
+  <section
+    class="cr-hero cr-hero-slideshow"
+    (touchstart)="onHeroTouchStart($event)"
+    (touchend)="onHeroTouchEnd($event)">
+
+    <!-- BACKGROUND IMAGES -->
+    <div
+      class="cr-hero-slide"
+      *ngFor="let slide of heroSlides; let i = index"
+      [class.active]="activeHeroSlide === i"
+      [style.background-image]="'url(' + slide.image + ')'">
+    </div>
+
+    <!-- HERO CONTENT -->
+    <div class="cr-hero-content">
+
+      <span class="cr-eyebrow">
+        {{ heroSlides[activeHeroSlide].eyebrow }}
+      </span>
+
+      <p class="cr-greeting">
+        {{ greeting }}, {{ firstName }}!
+      </p>
+
+      <h1>
+        {{ heroSlides[activeHeroSlide].title }}
+      </h1>
+
+      <p class="cr-hero-subtitle">
+        {{ heroSlides[activeHeroSlide].subtitle }}
+      </p>
+
+      <ion-button
+        [routerLink]="heroSlides[activeHeroSlide].link"
+        class="cr-hero-button"
+        shape="round">
+
+        {{ heroSlides[activeHeroSlide].button }}
+
+        <ion-icon
+          slot="end"
+          name="arrow-forward-outline">
+        </ion-icon>
+
+      </ion-button>
+
+    </div>
+
+    <!-- NAVIGATION DOTS -->
+    <div class="cr-hero-dots">
+
+      <button
+        type="button"
+        *ngFor="let slide of heroSlides; let i = index"
+        [class.active]="activeHeroSlide === i"
+        [attr.aria-label]="'Go to slide ' + (i + 1)"
+        [attr.aria-pressed]="activeHeroSlide === i"
+        (click)="goToHeroSlide(i)">
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================
+       SWEET SHORTCUTS
+       ===================================== -->
+  <div class="cr-section-heading">
+
+    <div>
+      <span class="cr-overline">
+        MADE FOR YOU
+      </span>
+
+      <h2>Sweet shortcuts</h2>
+    </div>
+
+  </div>
+
+  <div class="cr-quick-grid">
+
+    <!-- BUILD A BOX -->
+    <a routerLink="/pages/box-builder">
+
+      <div class="cr-action-icon">
+        <ion-icon name="gift-outline"></ion-icon>
+      </div>
+
+      <span>Build a box</span>
+
+    </a>
+
+    <!-- TASTE QUIZ -->
+    <a routerLink="/pages/quiz">
+
+      <div class="cr-action-icon">
+        <ion-icon name="help-circle-outline"></ion-icon>
+      </div>
+
+      <span>Taste quiz</span>
+
+    </a>
+
+    <!-- SEND A GIFT -->
+    <button
+      type="button"
+      (click)="startGift()">
+
+      <div class="cr-action-icon">
+        <ion-icon name="heart-outline"></ion-icon>
+      </div>
+
+      <span>Send a gift</span>
+
+    </button>
+
+    <!-- REORDER -->
+    <a routerLink="/pages/orders">
+
+      <div class="cr-action-icon">
+        <ion-icon name="repeat-outline"></ion-icon>
+      </div>
+
+      <span>Reorder</span>
+
+    </a>
+
+  </div>
+
+
+  <!-- =====================================
+       LOYALTY REWARDS
+       ===================================== -->
+  <section
+    class="cr-loyalty-card"
+    *ngIf="state$ | async as s"
+    routerLink="/pages/profile">
+
+    <div class="cr-loyalty-top">
+
+      <div>
+
+        <p class="cr-loyalty-label">
+          <ion-icon name="sparkles-outline"></ion-icon>
+          Your loyalty rewards
+        </p>
+
+        <!-- WHITE CRUMBS BALANCE -->
+        <h2 class="cr-loyalty-balance">
+          <span class="cr-loyalty-number">
+            {{ s.balance }}
+          </span>
+          <small>crumbs</small>
+        </h2>
+
+      </div>
+
+      <span class="cr-tier-pill">
+        {{ loyalty.tier(s.lifetime).emoji }}
+        {{ loyalty.tier(s.lifetime).name }}
+      </span>
+
+    </div>
+
+    <ion-progress-bar
+      [value]="loyalty.progress(s.lifetime) / 100">
+    </ion-progress-bar>
+
+    <p
+      class="cr-loyalty-caption"
+      *ngIf="loyalty.nextTier(s.lifetime) as next; else maxed">
+
+      {{ next.min - s.lifetime }}
+      more crumbs to reach {{ next.name }}
+
+    </p>
+
+    <ng-template #maxed>
+
+      <p class="cr-loyalty-caption">
+        You've reached the top tier!
+      </p>
+
+    </ng-template>
+
+  </section>
+
+
+  <!-- =====================================
+       FRESH FROM THE OVEN
+       ===================================== -->
+  <div class="cr-section-heading">
+
+    <div>
+
+      <span class="cr-overline">
+        JUST FOR YOU
+      </span>
+
+      <h2>Fresh from the oven</h2>
+
+    </div>
+
+    <a
+      routerLink="/pages/products"
+      class="cr-see-all">
+
+      See all
+
+      <ion-icon
+        name="arrow-forward-outline">
+      </ion-icon>
+
+    </a>
+
+  </div>
+
+  <!-- HORIZONTAL COOKIE SCROLL -->
+  <div class="cr-cookie-scroll">
+
+    <app-cookie-card
+      *ngFor="let c of freshBatch"
+      [cookie]="c"
+      [compact]="true">
+    </app-cookie-card>
+
+  </div>
+
+
+  <!-- =====================================
+       YOUR USUAL ORDER
+       ===================================== -->
+  <ng-container *ngIf="usual as u">
+
+    <div class="cr-section-heading">
+
+      <div>
+
+        <span class="cr-overline">
+          YOUR FAVORITES
+        </span>
+
+        <h2>Your usual</h2>
+
+      </div>
+
+    </div>
+
+    <div class="cr-usual-card">
+
+      <!-- COOKIE IMAGE -->
+      <img
+        [src]="u.image"
+        [alt]="u.name"
+        loading="lazy"
+        class="cr-usual-image" />
+
+      <!-- COOKIE DETAILS -->
+      <div class="cr-usual-details">
+
+        <h3>{{ u.name }}</h3>
+
+        <p>Your most-loved cookie</p>
+
+      </div>
+
+      <!-- REORDER BUTTON -->
+      <ion-button
+        size="small"
+        shape="round"
+        (click)="reorderUsual(u)"
+        [disabled]="!products.canPurchase(u)">
+
+        Add
+
+      </ion-button>
+
+    </div>
+
+  </ng-container>
+
+
+  <!-- =====================================
+       COOKIE OF THE DAY
+       ===================================== -->
+  <div class="cr-section-heading">
+
+    <div>
+
+      <span class="cr-overline">
+        TODAY'S SPECIAL
+      </span>
+
+      <h2>Cookie of the day</h2>
+
+    </div>
+
+    <ion-icon
+      name="sparkles-outline"
+      class="cr-heading-icon">
+    </ion-icon>
+
+  </div>
+
+  <!-- FULL-WIDTH FEATURED COOKIE -->
+  <div class="cr-featured-cookie">
+
+    <app-cookie-card
+      [cookie]="cookieOfTheDay">
+    </app-cookie-card>
+
+  </div>
+
+
+  <!-- =====================================
+       DASHBOARD FOOTER
+       ===================================== -->
+  <div class="cr-dashboard-footer">
+
+    <ion-icon name="heart"></ion-icon>
+
+    <span>
+      Baked with love, shared with joy.
+    </span>
+
+  </div>
+
+</ion-content>

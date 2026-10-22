@@ -1,0 +1,178 @@
+/* Shared page styles for Cruminae. Colors come from the --cm-* tokens in variables.scss. */
+
+.cm-content {
+  --background: var(--cm-cream);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 24px;
+  &.has-footer { --padding-bottom: 12px; }
+}
+
+h1, h2, h3 { color: var(--cm-espresso); }
+.muted { color: var(--cm-espresso-soft); margin: 0 0 6px; }
+.small { font-size: 0.78rem; }
+.center { text-align: center; }
+.grow { flex: 1; min-width: 0; }
+.strike { text-decoration: line-through; opacity: 0.7; }
+.clamp { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+.section-title { margin: 22px 0 10px; font-size: 1.05rem; font-weight: 700; }
+
+/* ---------- hero ---------- */
+.hero {
+  background: var(--cm-blush);
+  border: 1px solid var(--cm-blush-line);
+  border-radius: 18px;
+  padding: 20px 18px 18px;
+  margin-bottom: 14px;
+  h1 { margin: 4px 0 12px; font-size: 1.55rem; line-height: 1.2; font-weight: 800; }
+  p { margin: 0 0 8px; color: var(--cm-espresso-soft); }
+  .hero-hello { margin: 0; font-size: 0.85rem; font-weight: 600; }
+}
+
+/* ---------- quick actions ---------- */
+.quick-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px;
+  a {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 12px 4px; border-radius: 12px; cursor: pointer;
+    background: #fff; border: 1px solid var(--cm-line);
+    color: var(--cm-espresso); text-decoration: none; font-size: 0.72rem; font-weight: 600; text-align: center;
+    ion-icon { font-size: 1.5rem; color: var(--cm-gold); }
+  }
+}
+
+/* ---------- loyalty ---------- */
+.loyalty-card {
+  background: var(--cm-espresso); color: var(--cm-gold-soft);
+  border-radius: 16px; padding: 16px; margin-bottom: 6px; cursor: pointer;
+  .muted { color: #CDBBA6; }
+  h2 { margin: 0; color: #fff; font-size: 1.8rem; small { font-size: 0.85rem; font-weight: 500; color: #CDBBA6; } }
+  ion-progress-bar { --background: rgba(255,255,255,.18); --progress-background: var(--cm-gold); height: 8px; border-radius: 99px; margin: 12px 0 8px; }
+  p { margin: 4px 0 0; }
+}
+.loyalty-top { display: flex; align-items: center; justify-content: space-between; }
+.tier-pill { background: var(--cm-gold-soft); color: var(--cm-espresso); padding: 5px 11px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; }
+
+/* ---------- layout helpers ---------- */
+.h-scroll {
+  display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity;
+  > * { flex: 0 0 160px; scroll-snap-align: start; }
+  &::-webkit-scrollbar { display: none; }
+}
+.cookie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.single-card { max-width: 260px; }
+
+.usual-card, .line-card, .order-card, .craving, .dev-card, .feature, .crumb-row {
+  display: flex; gap: 12px; align-items: center;
+  background: #fff; border: 1px solid var(--cm-line); border-radius: 14px; padding: 12px; margin-bottom: 10px;
+  h3 { margin: 0 0 2px; font-size: 0.95rem; font-weight: 600; }
+}
+.usual-emoji, .line-emoji { font-size: 2rem; width: 46px; height: 46px; border-radius: 12px; background: var(--cm-gold-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* ---------- filters ---------- */
+.cm-search { --background: #fff; --border-radius: 12px; padding: 0 0 6px; }
+.filter-block { margin-bottom: 12px; }
+.chip-row { display: flex; flex-wrap: wrap; margin: 0 -4px 6px; ion-chip { text-transform: capitalize; cursor: pointer; } }
+.cm-sort { --background: transparent; font-size: 0.85rem; min-height: 40px; }
+.cm-segment { margin-bottom: 8px; --background: var(--cm-blush); ion-segment-button { --color-checked: var(--cm-espresso); --indicator-color: #fff; text-transform: none; font-weight: 600; } }
+
+/* ---------- empty state ---------- */
+.empty {
+  text-align: center; padding: 40px 16px;
+  > span { font-size: 3rem; }
+  h3 { margin: 10px 0 4px; }
+  p { color: var(--cm-espresso-soft); margin: 0 0 14px; }
+}
+
+/* ---------- steppers, rows, summary ---------- */
+.stepper {
+  display: inline-flex; align-items: center; gap: 10px;
+  button {
+    width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--cm-blush-line);
+    background: var(--cm-blush); color: var(--cm-espresso);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    &:disabled { opacity: 0.4; cursor: default; }
+  }
+  span { min-width: 18px; text-align: center; font-weight: 700; color: var(--cm-espresso); }
+}
+.line-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+
+.summary-card {
+  background: #fff; border: 1px solid var(--cm-line); border-radius: 14px; padding: 14px; margin: 14px 0 6px;
+  .sum-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 0.9rem; color: var(--cm-espresso-soft); }
+  .saving { color: #4F7A3A; }
+  .total { color: var(--cm-espresso); font-weight: 700; font-size: 1.05rem; border-top: 1px dashed var(--cm-blush-line); margin-top: 6px; padding-top: 10px; }
+  p { margin: 8px 0 0; }
+}
+.cm-cta { margin-top: 12px; }
+
+/* ---------- forms ---------- */
+.cm-field { --background: #fff; --border-radius: 12px; --padding-start: 14px; border: 1px solid var(--cm-line); border-radius: 12px; margin-bottom: 10px; }
+.toggle-row { --background: #fff; border: 1px solid var(--cm-line); border-radius: 12px; margin: 18px 0 8px; ion-toggle { width: 100%; } }
+.gift-panel { background: var(--cm-gold-soft); border-radius: 14px; padding: 12px; margin-bottom: 8px; }
+.gift-banner { background: var(--cm-gold-soft); border: 1px solid var(--cm-gold); border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; font-size: 0.85rem; font-weight: 600; }
+
+/* ---------- delivery slots ---------- */
+.days { margin-bottom: 10px; > * { flex: 0 0 62px; } }
+.day {
+  display: flex; flex-direction: column; align-items: center; padding: 8px 0; border-radius: 12px; cursor: pointer;
+  background: #fff; border: 1px solid var(--cm-line); color: var(--cm-espresso);
+  small { font-size: 0.68rem; color: var(--cm-espresso-soft); } strong { font-size: 1.15rem; }
+  &.on { background: var(--cm-gold); border-color: var(--cm-gold); color: #fff; small { color: #fff; } }
+}
+.slot-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.slot {
+  padding: 11px 6px; border-radius: 12px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+  background: #fff; border: 1px solid var(--cm-line); color: var(--cm-espresso);
+  &.on { background: var(--cm-gold-soft); border-color: var(--cm-gold); }
+  &:disabled { opacity: 0.4; text-decoration: line-through; cursor: default; }
+}
+
+/* ---------- box builder, footer ---------- */
+.builder-actions { display: flex; align-items: center; justify-content: space-between; }
+.builder-list ion-item { --background: #fff; --min-height: 62px; border: 1px solid var(--cm-line); border-radius: 12px; margin-bottom: 8px; }
+.b-emoji { font-size: 1.7rem; margin-inline-end: 12px; }
+.cm-footer {
+  ion-toolbar { --background: #fff; --border-color: var(--cm-line); --padding-start: 16px; --padding-end: 16px; --min-height: 0; }
+  ion-progress-bar { --progress-background: var(--cm-gold); --background: var(--cm-blush); }
+}
+.footer-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; p { margin: 2px 0 0; } }
+
+/* ---------- quiz ---------- */
+.quiz { max-width: 560px; margin: 0 auto; h1 { font-size: 1.4rem; margin: 6px 0 16px; line-height: 1.25; } ion-progress-bar { --progress-background: var(--cm-gold); --background: var(--cm-blush); height: 6px; border-radius: 99px; margin-bottom: 8px; } }
+.quiz-option {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  padding: 14px; margin-bottom: 10px; border-radius: 14px; cursor: pointer;
+  background: #fff; border: 1px solid var(--cm-line); color: var(--cm-espresso); font: inherit; font-weight: 600;
+  span { font-size: 1.5rem; }
+  &:active { background: var(--cm-gold-soft); border-color: var(--cm-gold); }
+}
+.persona { background: var(--cm-blush); border: 1px solid var(--cm-blush-line); border-radius: 16px; padding: 16px; margin-bottom: 8px; h1 { margin: 2px 0 6px; } p { margin: 0; } }
+
+/* ---------- orders ---------- */
+.order-card { display: block; }
+.order-head { display: flex; justify-content: space-between; align-items: flex-start; }
+.order-items { margin: 4px 0 10px; font-size: 0.85rem; color: var(--cm-espresso-soft); }
+.tracker { display: flex; margin: 6px 0 12px; }
+.t-step {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; color: var(--cm-espresso-soft);
+  small { font-size: 0.68rem; text-align: center; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--cm-line); z-index: 1; }
+  &:not(:first-child)::before { content: ''; position: absolute; top: 6px; right: 50%; width: 100%; height: 2px; background: var(--cm-line); }
+  &.done .dot { background: var(--cm-gold); }
+  &.done:not(:first-child)::before { background: var(--cm-gold); }
+  &.now small { color: var(--cm-espresso); font-weight: 700; }
+}
+.order-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.tag { font-size: 0.7rem; padding: 3px 9px; border-radius: 999px; background: var(--cm-blush); color: var(--cm-espresso); }
+.bar { height: 6px; background: var(--cm-line); border-radius: 99px; overflow: hidden; margin: 4px 0; span { display: block; height: 100%; background: var(--cm-gold); border-radius: 99px; } }
+
+/* ---------- misc pages ---------- */
+.feature { ion-icon { font-size: 1.5rem; color: var(--cm-gold); flex-shrink: 0; } p { margin: 0; } }
+.avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--cm-blush); color: var(--cm-espresso); display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+.contact-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; a { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 4px; border-radius: 12px; background: var(--cm-blush); color: var(--cm-espresso); text-decoration: none; font-weight: 600; font-size: 0.8rem; ion-icon { font-size: 1.4rem; color: var(--cm-gold); } } }
+.history ion-item { --background: transparent; --min-height: 48px; h3 { font-size: 0.85rem; margin: 0; } p { font-size: 0.72rem; } }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

@@ -1,0 +1,337 @@
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.login-content {
+  --background: #fff8f3;
+}
+
+.login-container {
+  position: relative;
+  isolation: isolate;
+  max-width: 430px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 28px 24px 38px;
+  overflow: hidden;
+  background: #fff8f3;
+  color: #593d30;
+}
+
+.pink-blob {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background: #efd1cb;
+  opacity: 0.8;
+}
+
+.blob-top {
+  width: 210px;
+  height: 210px;
+  top: -115px;
+  right: -100px;
+  border-radius: 45% 55% 60% 40%;
+}
+
+.blob-bottom {
+  width: 230px;
+  height: 160px;
+  bottom: -95px;
+  left: -110px;
+  border-radius: 60% 40% 50% 50%;
+}
+
+/* Brand */
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-row img {
+  width: 53px;
+  height: 53px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  color: #5b392a;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+}
+
+.brand-tagline {
+  margin-top: 2px;
+  color: #a17d6e;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+/* Cookie illustration */
+.cookie-decoration {
+  position: relative;
+  height: 115px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cookie-main {
+  font-size: 76px;
+  line-height: 1;
+  transform: rotate(-15deg);
+  filter: drop-shadow(0 10px 8px rgba(92, 57, 40, 0.13));
+  animation: cookieFloat 3s ease-in-out infinite;
+}
+
+.sparkle {
+  position: absolute;
+  color: #c99d2c;
+  font-size: 21px;
+}
+
+.sparkle-one {
+  top: 22px;
+  left: 27%;
+}
+
+.sparkle-two {
+  top: 15px;
+  right: 24%;
+}
+
+.sparkle-three {
+  bottom: 18px;
+  right: 29%;
+}
+
+@keyframes cookieFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-15deg);
+  }
+
+  50% {
+    transform: translateY(-7px) rotate(-10deg);
+  }
+}
+
+/* Heading */
+.login-header {
+  text-align: center;
+  margin: 4px 0 23px;
+}
+
+.eyebrow {
+  display: block;
+  color: #b98e39;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+
+.login-header h1 {
+  color: #57382a;
+  font-size: clamp(30px, 8vw, 38px);
+  font-weight: 900;
+  letter-spacing: -1.2px;
+  line-height: 1.15;
+  margin: 0 0 11px;
+}
+
+.login-header h1 span {
+  color: #c98e82;
+}
+
+.login-header p {
+  color: #987b6e;
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 275px;
+  margin: 0 auto;
+}
+
+/* Form */
+.form-card {
+  padding: 24px 18px 22px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid #f0e3da;
+  border-radius: 25px;
+  box-shadow: 0 12px 30px rgba(89, 61, 48, 0.06);
+}
+
+.form-group {
+  margin-bottom: 19px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 9px;
+  color: #674b3c;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 53px;
+  padding: 0 14px;
+  background: #fffdfb;
+  border: 1.5px solid #e8d8cc;
+  border-radius: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-wrapper:focus-within {
+  border-color: #c79d36;
+  box-shadow: 0 0 0 3px rgba(199, 157, 54, 0.12);
+}
+
+.input-wrapper > ion-icon {
+  flex-shrink: 0;
+  color: #a17c6b;
+  font-size: 20px;
+}
+
+.input-wrapper input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #543b2e;
+  font: inherit;
+  font-size: 13px;
+}
+
+.input-wrapper input::placeholder {
+  color: #b6a39a;
+}
+
+.password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border: 0;
+  background: transparent;
+  color: #a17c6b;
+  cursor: pointer;
+}
+
+.password-toggle ion-icon {
+  font-size: 20px;
+}
+
+.error-message {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff0ee;
+  color: #b34242;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 15px;
+}
+
+/* Primary button */
+.login-button {
+  width: 100%;
+  min-height: 51px;
+  margin-top: 5px;
+  border: 0;
+  border-radius: 14px;
+  background: #c59c2a;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(197, 156, 42, 0.17);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.login-button span {
+  margin-left: 8px;
+  font-size: 20px;
+}
+
+.login-button:hover {
+  background: #ad8620;
+}
+
+.login-button:active {
+  transform: scale(0.98);
+}
+
+/* Footer links */
+.signup-link {
+  margin-top: 23px;
+  color: #876f63;
+  font-size: 12px;
+  text-align: center;
+}
+
+.signup-link a {
+  color: #b88c22;
+  font-weight: 800;
+  text-decoration: none;
+  margin-left: 3px;
+}
+
+.back-link {
+  display: block;
+  width: fit-content;
+  margin: 23px auto 0;
+  color: #987b6e;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.back-link span {
+  margin-right: 5px;
+}
+
+.bottom-note {
+  margin-top: 25px;
+  color: #bd9b8c;
+  font-size: 11px;
+  text-align: center;
+}
+
+/* Small screens */
+@media (max-width: 360px) {
+  .login-container {
+    padding: 22px 16px 30px;
+  }
+
+  .cookie-decoration {
+    height: 95px;
+  }
+
+  .cookie-main {
+    font-size: 63px;
+  }
+
+  .form-card {
+    padding: 20px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cookie-main {
+    animation: none;
+  }
+}

@@ -1,0 +1,527 @@
+/* Ionic core CSS */
+@import "@ionic/angular/css/core.css";
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+@import "@ionic/angular/css/display.css";
+
+/* Cruminae theme */
+@import "theme/variables.scss";
+@import "theme/cruminae.scss";
+
+:root {
+  --ion-font-family: 'Poppins', sans-serif;
+}
+
+html,
+body,
+ion-app,
+button,
+input,
+select,
+textarea {
+  font-family: var(--ion-font-family);
+}
+
+/* ==========================================
+   CRUMINAE - FIXED MOBILE APP VIEW
+   ========================================== */
+
+:root {
+  --cruminae-mobile-width: 430px;
+}
+
+/* Desktop browser background */
+@media (min-width: 481px) {
+  html {
+    width: 100%;
+    height: 100%;
+    background: #f1e9e7;
+  }
+
+  body {
+    width: 100%;
+    max-width: var(--cruminae-mobile-width);
+    height: 100dvh;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    background: #fff8f1;
+
+    box-shadow:
+      0 0 45px rgba(80, 45, 35, 0.15);
+  }
+
+  ion-app {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+/* Actual mobile phones */
+@media (max-width: 480px) {
+  html,
+  body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+  }
+
+  ion-app {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Prevent horizontal overflow */
+ion-content {
+  --background: #fff8f1;
+}
+
+ion-router-outlet {
+  max-width: 100%;
+}
+
+
+/* ========================================
+   CRUMINAE - PREMIUM FILTER DIALOG
+   ======================================== */
+
+ion-alert.cruminae-filter-alert {
+  --width: calc(100% - 32px);
+  --max-width: 390px;
+
+  .alert-wrapper {
+    width: 100%;
+    max-width: 390px;
+    max-height: min(80dvh, 650px);
+    border-radius: 24px;
+    overflow: hidden;
+    background: #fffbf7;
+    box-shadow: 0 18px 50px rgba(63, 46, 34, 0.22);
+  }
+
+  .alert-head {
+    background: #f0d6dc;
+    padding: 22px 20px 17px;
+  }
+
+  .alert-title {
+    color: #493126;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 750;
+    line-height: 1.35;
+  }
+
+  .alert-sub-title {
+    margin-top: 6px;
+    color: #80635a;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .alert-radio-group {
+    padding: 10px 12px;
+    max-height: min(53dvh, 440px);
+    overflow-y: auto;
+    border: none;
+  }
+
+  .alert-radio-button {
+    min-height: 51px;
+    margin: 4px 0;
+    border-radius: 13px;
+    transition: background 180ms ease;
+  }
+
+  .alert-radio-button:hover {
+    background: #faf0e9;
+  }
+
+  .alert-radio-button[aria-checked="true"] {
+    background: #f9e9ed;
+  }
+
+  .alert-radio-label {
+    padding: 13px 8px;
+    color: #594238;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: normal;
+    line-height: 1.45;
+  }
+
+  .alert-radio-button[aria-checked="true"]
+  .alert-radio-label {
+    color: #7e4b56;
+    font-weight: 700;
+  }
+
+  .alert-radio-icon {
+    width: 19px;
+    height: 19px;
+    border-color: #c9b8ae;
+  }
+
+  .alert-radio-inner {
+    background: #c9973f;
+  }
+
+  .alert-button-group {
+    padding: 12px 16px 16px;
+    gap: 8px;
+    background: #fff5ef;
+  }
+
+  .alert-button {
+    margin: 0;
+    min-height: 39px;
+    border-radius: 999px;
+    color: #67473c;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: none;
+  }
+
+  .alert-button-role-cancel {
+    background: #f0d6dc;
+  }
+
+  .alert-button:not(.alert-button-role-cancel) {
+    background: #c9973f;
+    color: #fff;
+  }
+}
+
+/* ========================================
+   CRUMINAE FLOATING CALENDAR & TIME
+======================================== */
+
+ion-modal.cruminae-picker-modal {
+  --width: min(360px, calc(100% - 32px));
+  --height: auto;
+  --border-radius: 20px;
+  --box-shadow: 0 15px 45px rgba(73, 42, 53, 0.2);
+  --backdrop-opacity: 0.4;
+
+  align-items: center;
+  justify-content: center;
+}
+
+ion-modal.cruminae-picker-modal::part(content) {
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff8f8;
+}
+
+.cruminae-picker-modal .picker-modal-content {
+  padding: 18px 15px 20px;
+  background: #fff8f8;
+}
+
+.cruminae-picker-modal .picker-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cruminae-picker-modal .picker-modal-header strong {
+  color: #573b42;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.cruminae-picker-modal .picker-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+  background: #f9e4ec;
+  color: #a65e79;
+  cursor: pointer;
+}
+
+.cruminae-picker-modal .picker-close-btn ion-icon {
+  font-size: 21px;
+}
+
+.cruminae-picker-modal .picker-close-btn:hover {
+  background: #efcfdb;
+}
+
+.cruminae-picker-modal .cruminae-datetime {
+  width: 100%;
+  max-width: 100%;
+
+  --background: #fff8f8;
+  --background-rgb: 255, 248, 248;
+
+  --wheel-highlight-background: #f5dce5;
+  --wheel-fade-background-rgb: 255, 248, 248;
+
+  color: #573b42;
+}
+
+.cruminae-picker-modal
+.cruminae-datetime::part(calendar-day active) {
+  background: #d78fa9;
+  color: #ffffff;
+  border-radius: 50%;
+}
+
+.cruminae-picker-modal
+.cruminae-datetime::part(calendar-day today) {
+  color: #b66b87;
+}
+
+.cruminae-picker-modal
+.cruminae-datetime::part(calendar-day today active) {
+  background: #d78fa9;
+  color: #ffffff;
+}
+
+.cruminae-picker-modal .picker-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.cruminae-picker-modal .picker-cancel-btn,
+.cruminae-picker-modal .picker-apply-btn {
+  padding: 11px 16px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cruminae-picker-modal .picker-cancel-btn {
+  background: #f5e8e9;
+  color: #76525f;
+}
+
+.cruminae-picker-modal .picker-apply-btn {
+  background: #ce91a7;
+  color: #ffffff;
+}
+
+/* ==========================================
+   CRUMINAE
+   SENIOR CITIZEN & PWD DISCOUNT POPUP
+   PINK AND CREAM THEME
+   ========================================== */
+
+ion-alert.cruminae-discount-alert {
+  --background: #fffaf7;
+  --width: calc(100% - 48px);
+  --max-width: 390px;
+  --backdrop-opacity: 0.45;
+}
+
+/* Main popup */
+ion-alert.cruminae-discount-alert .alert-wrapper {
+  width: 100%;
+  max-width: 390px;
+
+  background: #fffaf7;
+  border: 1px solid #f0e0e5;
+  border-radius: 22px;
+
+  box-shadow: 0 16px 45px rgba(94, 48, 68, 0.2);
+
+  overflow: hidden;
+}
+
+/* Popup title */
+ion-alert.cruminae-discount-alert .alert-head {
+  padding: 24px 24px 18px;
+}
+
+ion-alert.cruminae-discount-alert .alert-title {
+  margin: 0;
+
+  font-size: 19px;
+  font-weight: 700;
+
+  color: #674653;
+}
+
+/* Radio group */
+ion-alert.cruminae-discount-alert .alert-radio-group {
+  padding: 8px 16px;
+
+  border-top: 1px solid #f2e2e8;
+  border-bottom: 1px solid #f2e2e8;
+}
+
+/* Each discount option */
+ion-alert.cruminae-discount-alert .alert-radio-button {
+  min-height: 58px;
+
+  margin: 5px 0;
+
+  border-radius: 12px;
+
+  transition: background 0.2s ease;
+}
+
+/* Hover */
+ion-alert.cruminae-discount-alert
+.alert-radio-button:hover {
+  background: #fff0f5;
+}
+
+/* Selected option */
+ion-alert.cruminae-discount-alert
+.alert-radio-button[aria-checked="true"] {
+  background: #fceaf1;
+}
+
+/* Text */
+ion-alert.cruminae-discount-alert .alert-radio-label {
+  color: #674653;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  padding: 12px 8px;
+}
+
+/* Selected text */
+ion-alert.cruminae-discount-alert
+.alert-radio-button[aria-checked="true"]
+.alert-radio-label {
+  color: #a9577d;
+  font-weight: 700;
+}
+
+/* Radio circle */
+ion-alert.cruminae-discount-alert .alert-radio-icon {
+  border-color: #dba9be;
+}
+
+/* Selected radio circle */
+ion-alert.cruminae-discount-alert
+.alert-radio-button[aria-checked="true"]
+.alert-radio-icon {
+  border-color: #c8759a;
+}
+
+/* Inner radio circle */
+ion-alert.cruminae-discount-alert .alert-radio-inner {
+  background: #c8759a;
+}
+
+/* Bottom buttons */
+ion-alert.cruminae-discount-alert .alert-button-group {
+  display: flex;
+  justify-content: flex-end;
+
+  padding: 12px 16px 16px;
+  gap: 8px;
+
+  background: #fffaf7;
+}
+
+/* Cancel and OK */
+ion-alert.cruminae-discount-alert .alert-button {
+  min-width: 70px;
+
+  margin: 0;
+  padding: 10px 14px;
+
+  color: #b96c8e;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  border-radius: 12px;
+}
+
+/* Button hover */
+ion-alert.cruminae-discount-alert
+.alert-button:hover {
+  background: #fce7ef;
+}
+
+/* Focus */
+ion-alert.cruminae-discount-alert
+.alert-button:focus-visible {
+  outline: 2px solid #c8759a;
+  outline-offset: 2px;
+}
+
+/* Small screens */
+@media (max-width: 390px) {
+  ion-alert.cruminae-discount-alert {
+    --width: calc(100% - 36px);
+  }
+
+  ion-alert.cruminae-discount-alert .alert-head {
+    padding: 20px 18px 14px;
+  }
+
+  ion-alert.cruminae-discount-alert .alert-radio-group {
+    padding: 8px 12px;
+  }
+
+  ion-alert.cruminae-discount-alert .alert-radio-label {
+    font-size: 13px;
+  }
+}
+
+/* ==========================================
+   VERIFICATION NOTE IN CHECKOUT
+   ========================================== */
+
+.discount-verification-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 14px;
+  padding: 14px;
+
+  background: #fff0f5;
+
+  border: 1px solid #f0d5e0;
+  border-radius: 12px;
+}
+
+.discount-verification-note ion-icon {
+  flex-shrink: 0;
+
+  font-size: 20px;
+  color: #b96c8e;
+}
+
+.discount-verification-note p {
+  margin: 0;
+
+  font-size: 12px;
+  line-height: 1.6;
+
+  color: #795765;
+}
+
+

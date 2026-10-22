@@ -1,0 +1,56 @@
+<app-page-header title="Cookie Box Builder"></app-page-header>
+
+<ion-content class="cm-content has-footer">
+  <div class="gift-banner" *ngIf="giftMode">🎁 Gift Mode is on. You'll add a message card at checkout.</div>
+
+  <ion-segment [(ngModel)]="size" (ngModelChange)="onSizeChange()" class="cm-segment">
+    <ion-segment-button *ngFor="let s of sizes" [value]="s.size">
+      <ion-label>{{ s.size }} cookies</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <p class="muted small center">Save {{ discountPct }}% on a box of {{ size }}.</p>
+
+  <div class="builder-actions">
+    <ion-button fill="outline" size="small" shape="round" (click)="surprise()" [disabled]="!available.length">
+      <ion-icon slot="start" name="shuffle-outline"></ion-icon>Surprise me
+    </ion-button>
+    <ion-button fill="clear" size="small" (click)="reset()" [disabled]="!picked">Clear</ion-button>
+  </div>
+
+  <ion-list lines="none" class="builder-list">
+    <ion-item *ngFor="let c of products.cookies">
+      <ion-thumbnail slot="start"><img [src]="c.image" [alt]="c.name" loading="lazy" /></ion-thumbnail>
+      <ion-label>
+        <h3>{{ c.name }}</h3>
+        <p>{{ c.description }}</p>
+        <p>{{ products.canPurchase(c) ? (c.price | peso) + ' each' : 'Price coming soon' }}</p>
+      </ion-label>
+      <div class="stepper" slot="end">
+        <button type="button" (click)="dec(c)" [disabled]="!qty(c)" aria-label="Remove one">
+          <ion-icon name="remove"></ion-icon>
+        </button>
+        <span>{{ qty(c) }}</span>
+        <button type="button" (click)="inc(c)" [disabled]="full || !products.canPurchase(c)" aria-label="Add one">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer class="cm-footer">
+  <ion-toolbar>
+    <ion-progress-bar [value]="picked / size"></ion-progress-bar>
+    <div class="footer-row">
+      <div>
+        <strong>{{ picked }} of {{ size }} picked</strong>
+        <p class="muted small" *ngIf="!full">Pick {{ remaining }} more</p>
+        <p class="muted small" *ngIf="full">
+          <span class="strike" *ngIf="saved">{{ base | peso }}</span> {{ total | peso }}
+          <span *ngIf="saved"> · you save {{ saved | peso }}</span>
+        </p>
+      </div>
+      <ion-button shape="round" [disabled]="!full" (click)="addToCart()">Add box</ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

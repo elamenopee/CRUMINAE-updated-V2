@@ -1,0 +1,15 @@
+<app-page-header title="Developers"></app-page-header>
+
+<ion-content class="cm-content">
+  <p class="muted">The team behind Cruminae.</p>
+  <div class="dev-card" *ngFor="let d of team">
+    <span class="avatar">{{ initials(d.name) }}</span>
+    <div class="grow">
+      <h3>{{ d.name }}</h3>
+      <p class="muted small">{{ d.role }}</p>
+    </div>
+    <ion-button fill="clear" size="small" [href]="'mailto:' + d.email" aria-label="Email developer">
+      <ion-icon slot="icon-only" name="mail-outline"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,83 @@
+.cart-product-image {
+  width: 62px;
+  height: 62px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #f8e9e3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  span {
+    font-size: 30px;
+  }
+}
+
+
+/* CRUMINAE - SMALL CART COOKIE IMAGE */
+
+.line-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  min-width: 0;
+}
+
+.line-card .cart-product-image {
+  width: 60px !important;
+  height: 60px !important;
+  min-width: 60px;
+  max-width: 60px;
+  flex: 0 0 60px;
+
+  border-radius: 13px;
+  overflow: hidden;
+  background: #f8e9e3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.line-card .cart-product-image img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 13px;
+}
+
+.line-card .grow {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.line-card .grow h3 {
+  margin: 0 0 3px;
+  font-size: 14px;
+  overflow-wrap: break-word;
+}
+
+.line-card .line-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.line-card > ion-button {
+  flex-shrink: 0;
+  margin: 0;
+}

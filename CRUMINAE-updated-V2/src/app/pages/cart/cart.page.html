@@ -1,0 +1,54 @@
+<app-page-header title="Shopping Cart" [showCart]="false"></app-page-header>
+
+<ion-content class="cm-content">
+  <ng-container *ngIf="lines$ | async as lines">
+    <div class="empty" *ngIf="!lines.length">
+      <span>🛒</span>
+      <h3>Your cart is empty</h3>
+      <p>Add a few cookies or build a box to get started.</p>
+      <ion-button shape="round" routerLink="/pages/products">Browse cookies</ion-button>
+    </div>
+
+    <ng-container *ngIf="lines.length">
+      <div class="line-card" *ngFor="let l of lines; trackBy: trackLine">
+       <div class="cart-product-image">
+  <ng-container *ngIf="lineImage(l) as image; else cookieFallback">
+    <img
+      [src]="image"
+      [alt]="cart.lineName(l)"
+      (error)="onImageError($event)"
+    />
+  </ng-container>
+
+  <ng-template #cookieFallback>
+    <span>{{ cart.lineEmoji(l) }}</span>
+  </ng-template>
+</div>
+        <div class="grow">
+          <h3>{{ cart.lineName(l) }}</h3>
+          <p class="muted small clamp">{{ cart.lineDetail(l) }}</p>
+          <div class="line-bottom">
+            <div class="stepper">
+              <button type="button" (click)="cart.setQty(l, l.qty - 1)" aria-label="Decrease"><ion-icon name="remove"></ion-icon></button>
+              <span>{{ l.qty }}</span>
+              <button type="button" (click)="cart.setQty(l, l.qty + 1)" aria-label="Increase"><ion-icon name="add"></ion-icon></button>
+            </div>
+            <strong>{{ cart.linePurchasable(l) ? (cart.lineTotal(l) | peso) : 'Unavailable' }}</strong>
+          </div>
+        </div>
+        <ion-button fill="clear" color="medium" size="small" (click)="cart.remove(l)" aria-label="Remove item">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="summary-card" *ngIf="totals$ | async as t">
+        <div class="sum-row" *ngIf="t.boxSavings"><span>Items</span><span>{{ t.subtotal | peso }}</span></div>
+        <div class="sum-row saving" *ngIf="t.boxSavings"><span>Box savings</span><span>−{{ t.boxSavings | peso }}</span></div>
+        <div class="sum-row total"><span>Subtotal</span><span>{{ t.net | peso }}</span></div>
+        <p class="muted small">Delivery, gift options and crumbs are set at checkout.</p>
+      </div>
+      <p class="muted small" *ngIf="!cart.readyForCheckout">Remove unavailable items before checking out. New product prices are coming soon.</p>
+      <ion-button expand="block" shape="round" class="cm-cta" routerLink="/pages/checkout" [disabled]="!cart.readyForCheckout">Go to checkout</ion-button>
+    </ng-container>
+  </ng-container>
+</ion-content>

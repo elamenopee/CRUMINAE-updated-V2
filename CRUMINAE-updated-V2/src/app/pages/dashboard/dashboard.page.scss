@@ -1,0 +1,762 @@
+
+$cream: #faf6f1;
+$espresso: #3f2e22;
+$muted: #826c5b;
+$gold: #c9973f;
+$blush: #f0d6dc;
+
+:host {
+  display: block;
+}
+
+.cr-dashboard {
+  --background: #{$cream};
+}
+
+.cr-dashboard::part(scroll) {
+  padding: 14px 16px 30px;
+}
+
+.cr-hero {
+  min-height: 290px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 22px;
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(35, 22, 16, 0.04) 0%,
+      rgba(35, 22, 16, 0.32) 40%,
+      rgba(35, 22, 16, 0.86) 100%
+    ),
+    url('/assets/images/cruminae-hero.png')
+      center / cover no-repeat;
+  box-shadow: 0 10px 25px rgba(63, 46, 34, 0.13);
+}
+
+.cr-hero-content {
+  position: relative;
+  z-index: 1;
+  color: white;
+  animation: rise-in 650ms ease both;
+}
+
+.cr-eyebrow,
+.cr-overline {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.cr-eyebrow {
+  color: #f9dfb2;
+}
+
+.cr-greeting {
+  font-size: 12px;
+  margin: 12px 0 5px;
+  color: #fff1e6;
+}
+
+.cr-hero h1 {
+  font-size: clamp(24px, 7vw, 30px);
+  font-weight: 750;
+  line-height: 1.14;
+  letter-spacing: -0.7px;
+  margin: 0;
+  max-width: 290px;
+}
+
+.cr-hero-subtitle {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #f8e9df;
+  margin: 10px 0 16px;
+}
+
+.cr-hero-button {
+  --background: #{$gold};
+  --color: white;
+  --box-shadow: none;
+  height: 40px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: none;
+}
+
+.cr-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+  margin: 25px 0 13px;
+
+  h2 {
+    margin: 4px 0 0;
+    font-size: 18px;
+    font-weight: 750;
+    color: $espresso;
+    letter-spacing: -0.4px;
+  }
+}
+
+.cr-overline {
+  color: $gold;
+}
+
+.cr-see-all {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: $gold;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.cr-heading-icon {
+  font-size: 22px;
+  color: $gold;
+}
+
+.cr-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+
+  a,
+  button {
+    min-width: 0;
+    min-height: 92px;
+    padding: 12px 3px;
+    border: 1px solid #f0e5dc;
+    border-radius: 17px;
+    background: white;
+    text-decoration: none;
+    color: $espresso;
+    font: inherit;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    box-shadow: 0 3px 10px rgba(63, 46, 34, 0.035);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+
+    &:active {
+      transform: scale(0.96);
+    }
+
+    span {
+      font-size: 10px;
+      font-weight: 650;
+      text-align: center;
+      line-height: 1.25;
+    }
+  }
+}
+
+.cr-action-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 13px;
+  background: #fff5e8;
+  color: $gold;
+  display: grid;
+  place-items: center;
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+.cr-loyalty-card {
+  margin-top: 18px;
+  padding: 20px;
+  border-radius: 21px;
+  background: linear-gradient(135deg, #493427, #322319);
+  color: white;
+  box-shadow: 0 9px 20px rgba(63, 46, 34, 0.13);
+  cursor: pointer;
+
+  ion-progress-bar {
+    --background: rgba(255, 255, 255, 0.18);
+    --progress-background: #d5a74d;
+    height: 7px;
+    border-radius: 20px;
+    margin: 19px 0 10px;
+  }
+}
+
+.cr-loyalty-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+
+  h2 {
+    margin: 7px 0 0;
+    font-size: 34px;
+    font-weight: 750;
+
+    small {
+      font-size: 12px;
+      font-weight: 500;
+      color: #e3d1be;
+    }
+  }
+}
+
+.cr-loyalty-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-size: 12px;
+  color: #e3d1be;
+}
+
+.cr-tier-pill {
+  border-radius: 30px;
+  padding: 8px 10px;
+  background: #f8e8c9;
+  color: $espresso;
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.cr-loyalty-caption {
+  font-size: 11px;
+  margin: 0;
+  color: #dbc6b2;
+}
+
+.cr-cookie-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding: 3px 2px 14px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  app-cookie-card {
+    display: block;
+    flex: 0 0 175px;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+}
+
+.cr-usual-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid #f0e5dc;
+}
+
+.cr-usual-image {
+  width: 65px;
+  height: 65px;
+  border-radius: 13px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cr-usual-details {
+  flex: 1;
+  min-width: 0;
+
+  h3 {
+    margin: 0 0 5px;
+    font-size: 14px;
+    color: $espresso;
+  }
+
+  p {
+    margin: 0;
+    font-size: 10px;
+    color: $muted;
+  }
+}
+
+.cr-usual-card ion-button {
+  --background: #{$gold};
+  --box-shadow: none;
+  font-size: 10px;
+  text-transform: none;
+}
+
+.cr-featured-cookie {
+  max-width: 230px;
+  margin: 0 auto;
+
+  app-cookie-card {
+    display: block;
+    width: 100%;
+  }
+}
+
+.cr-dashboard-footer {
+  text-align: center;
+  margin: 32px 0 12px;
+  color: #a28b7b;
+  font-size: 11px;
+
+  ion-icon {
+    color: #cf899d;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cr-hero-content {
+    animation: none;
+  }
+
+  .cr-quick-grid a,
+  .cr-quick-grid button {
+    transition: none;
+  }
+}
+
+/* ==========================================
+   CRUMINAE - COOKIE OF THE DAY
+   FULL-WIDTH FEATURED CARD
+   ========================================== */
+
+:host ::ng-deep .cr-featured-cookie {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep .cr-featured-cookie app-cookie-card {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+/* FULL-WIDTH IMAGE */
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .art {
+  position: relative;
+  width: 100% !important;
+  height: 260px !important;
+  min-height: 260px;
+  max-width: 100% !important;
+  overflow: hidden;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .art img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  display: block;
+}
+
+/* COOKIE DETAILS */
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .body {
+  width: 100% !important;
+  padding: 18px !important;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .body h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #493126;
+}
+
+/* PRICE AND ADD BUTTON */
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+/* FIX: COOKIE OF THE DAY CUT-OFF */
+
+.cr-featured-cookie {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.cr-featured-cookie app-cookie-card {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card {
+  display: flex !important;
+  flex-direction: column !important;
+
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+
+  overflow: hidden;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .art {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  height: 250px !important;
+  min-height: 250px !important;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .body {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .buy {
+  margin-top: 12px;
+  padding-bottom: 4px;
+}
+
+/* COOKIE OF THE DAY + FOOTER FIX */
+
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+}
+
+ion-content.cr-dashboard {
+  --padding-bottom: 32px;
+}
+
+.cr-featured-cookie {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  margin-bottom: 24px !important;
+}
+
+.cr-featured-cookie app-cookie-card {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .body {
+  height: auto !important;
+  max-height: none !important;
+  flex: 0 0 auto !important;
+  padding-bottom: 18px !important;
+}
+
+:host ::ng-deep .cr-featured-cookie .cookie-card .buy {
+  margin-top: 12px;
+  padding-bottom: 6px;
+}
+
+/* DASHBOARD FOOTER */
+
+.cr-dashboard-footer {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+  margin: 0 0 16px;
+  padding: 20px 12px 24px;
+
+  color: #987d70;
+  font-size: 12px;
+  text-align: center;
+
+  border-top: 1px solid #eadbd5;
+  box-sizing: border-box;
+
+  ion-icon {
+    color: #c9973f;
+    font-size: 16px;
+  }
+}
+
+
+
+/* ==========================================
+   CRUMINAE RECTANGULAR HERO SLIDESHOW
+   ========================================== */
+
+.cr-hero.cr-hero-slideshow {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 245px;
+  min-height: 245px;
+  padding: 18px 20px 38px;
+
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 14px;
+
+  background: #806657;
+  background-image: none !important;
+}
+
+/* BACKGROUND SLIDES */
+
+.cr-hero-slideshow .cr-hero-slide {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: 0;
+  transition: opacity 800ms ease-in-out;
+}
+
+.cr-hero-slideshow .cr-hero-slide.active {
+  opacity: 1;
+}
+
+/* DARK GRADIENT OVER IMAGE */
+
+.cr-hero.cr-hero-slideshow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background: linear-gradient(
+    90deg,
+    rgba(38, 25, 19, 0.72) 0%,
+    rgba(38, 25, 19, 0.40) 55%,
+    rgba(38, 25, 19, 0.08) 100%
+  );
+
+  pointer-events: none;
+}
+
+/* TEXT ABOVE IMAGE */
+
+.cr-hero-slideshow .cr-hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.cr-hero-slideshow .cr-eyebrow {
+  display: block;
+  margin-bottom: 7px;
+  color: #f8d995;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.cr-hero-slideshow .cr-greeting {
+  margin: 0 0 5px;
+  color: #fff4e9;
+  font-size: 11px;
+}
+
+.cr-hero-slideshow h1 {
+  max-width: 260px;
+  margin: 0 0 8px;
+  color: #fffaf4;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.12;
+}
+
+.cr-hero-slideshow .cr-hero-subtitle {
+  max-width: 260px;
+  margin: 0 0 10px;
+  color: #f7e9de;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* GOLD BUTTON */
+
+.cr-hero-slideshow .cr-hero-button {
+  --background: #c99c38;
+  --color: #ffffff;
+  --border-radius: 99px;
+  --padding-start: 15px;
+  --padding-end: 15px;
+
+  height: 34px;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: none;
+}
+
+/* NAVIGATION DOTS */
+
+.cr-hero-dots {
+  position: absolute;
+  bottom: 11px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.cr-hero-dots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: all 250ms ease;
+}
+
+.cr-hero-dots button.active {
+  width: 24px;
+  background: #e6b84f;
+}
+
+@media (max-width: 360px) {
+  .cr-hero.cr-hero-slideshow {
+    height: 235px;
+    min-height: 235px;
+    padding: 16px 16px 34px;
+  }
+
+  .cr-hero-slideshow h1 {
+    font-size: 21px;
+  }
+}
+
+/* Navigation dots */
+
+.cr-hero-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.cr-hero-dots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: all 250ms ease;
+}
+
+.cr-hero-dots button.active {
+  width: 24px;
+  background: #e6b84f;
+}
+
+@media (max-width: 360px) {
+  .cr-hero-slideshow {
+    min-height: 325px;
+    padding-inline: 18px;
+  }
+
+  .cr-hero-slideshow h1 {
+    font-size: 25px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cr-hero-slide,
+  .cr-hero-dots button {
+    transition: none;
+  }
+}
+/* =====================================
+   LOYALTY REWARDS - WHITE BALANCE NUMBER
+   ===================================== */
+
+.cr-loyalty-card .cr-loyalty-balance .cr-loyalty-number {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}

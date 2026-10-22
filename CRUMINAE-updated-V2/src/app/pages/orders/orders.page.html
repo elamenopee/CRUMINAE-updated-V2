@@ -1,0 +1,70 @@
+<app-page-header title="My Orders"></app-page-header>
+
+<ion-content class="cm-content">
+  <ion-segment [(ngModel)]="view" class="cm-segment">
+    <ion-segment-button value="orders"><ion-label>Orders</ion-label></ion-segment-button>
+    <ion-segment-button value="cravings"><ion-label>My cravings</ion-label></ion-segment-button>
+  </ion-segment>
+
+  <ng-container *ngIf="tick$ | async">
+    <!-- Orders -->
+    <ng-container *ngIf="view === 'orders'">
+      <ng-container *ngIf="orders$ | async as orders">
+        <div class="empty" *ngIf="!orders.length">
+          <span>🧾</span><h3>No orders yet</h3>
+          <p>Your orders and tracking will show up here.</p>
+          <ion-button shape="round" routerLink="/pages/products">Order cookies</ion-button>
+        </div>
+
+        <div class="order-card" *ngFor="let o of orders">
+          <div class="order-head">
+            <div><h3>{{ o.id }}</h3><p class="muted small">{{ o.placedAt | date:'MMM d, y' }}</p></div>
+            <strong>{{ o.total | peso }}</strong>
+          </div>
+          <p class="order-items">{{ summary(o) }}</p>
+
+          <ng-container *ngIf="{ st: svc.stage(o) } as s">
+            <div class="tracker">
+              <div class="t-step" *ngFor="let label of svc.stageLabels(o); let i = index" [class.done]="i <= s.st" [class.now]="i === s.st">
+                <span class="dot"></span><small>{{ label }}</small>
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="order-tags">
+            <span class="tag" *ngIf="o.gift">🎁 Gift for {{ o.gift.to || 'someone special' }}</span>
+            <span class="tag" *ngIf="o.delivery.date">{{ o.delivery.mode === 'pickup' ? 'Pickup' : 'Delivery' }} · {{ o.delivery.slot }}</span>
+            <span class="tag" *ngIf="o.crumbsEarned">+{{ o.crumbsEarned }} crumbs</span>
+          </div>
+          <ion-button fill="outline" size="small" shape="round" (click)="reorder(o)">
+            <ion-icon slot="start" name="repeat-outline"></ion-icon>Reorder
+          </ion-button>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- Craving tracker -->
+    <ng-container *ngIf="view === 'cravings'">
+      <div class="empty" *ngIf="!cravings.length">
+        <span>🍪</span><h3>No cravings tracked yet</h3>
+        <p>Order a few times and we'll show what you reach for most.</p>
+      </div>
+
+      <ng-container *ngIf="cravings.length">
+        <p class="muted">Your most-ordered cookies</p>
+        <div class="craving" *ngFor="let c of cravings">
+          <ng-container *ngIf="products.byId(c.cookieId) as cookie">
+            <span class="line-emoji">{{ cookie.emoji }}</span>
+            <div class="grow">
+              <h3>{{ cookie.name }}</h3>
+              <div class="bar"><span [style.width.%]="(c.count / topCount) * 100"></span></div>
+              <p class="muted small">Ordered {{ c.count }} {{ c.count === 1 ? 'time' : 'times' }}</p>
+            </div>
+            <ion-button size="small" shape="round" (click)="addOne(c.cookieId)">Add</ion-button>
+          </ng-container>
+        </div>
+        <ion-button expand="block" shape="round" class="cm-cta" (click)="reorderTop()">Reorder my top 3</ion-button>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ion-content>

@@ -1,0 +1,999 @@
+<app-page-header
+  title="Checkout"
+  backHref="/pages/cart"
+  [showCart]="false">
+</app-page-header>
+
+<ion-content class="cm-content has-footer">
+
+  <!-- EMPTY CART -->
+  <div class="empty" *ngIf="!lines.length">
+    <span>🛒</span>
+    <h3>Nothing to check out</h3>
+
+    <ion-button shape="round" routerLink="/pages/products">
+      Browse cookies
+    </ion-button>
+  </div>
+
+  <ng-container *ngIf="lines.length">
+
+    <!-- DELIVERY OR PICKUP -->
+    <h2 class="section-title">How do you want it?</h2>
+
+    <ion-segment
+      [(ngModel)]="draft.delivery.mode"
+      (ionChange)="onModeChange()"
+      class="cm-segment">
+
+      <ion-segment-button value="delivery">
+        <ion-label>Delivery</ion-label>
+      </ion-segment-button>
+
+      <ion-segment-button value="pickup">
+        <ion-label>Pickup</ion-label>
+      </ion-segment-button>
+
+    </ion-segment>
+
+    <!-- ADDRESS -->
+    <ion-item
+      lines="none"
+      class="cm-field"
+      *ngIf="draft.delivery.mode === 'delivery'">
+
+      <ion-input
+        label="Delivery address"
+        labelPlacement="floating"
+        [(ngModel)]="address">
+      </ion-input>
+
+    </ion-item>
+
+    <p
+      class="muted small"
+      *ngIf="draft.delivery.mode === 'pickup'">
+      Pick up at our shop. See Contact Us for the address.
+    </p>
+
+    <!-- DATE AND TIME -->
+    <h2 class="section-title">
+      Choose your preferred date and time
+    </h2>
+
+    <div class="schedule-card">
+
+      <label class="field-label">Preferred Date</label>
+
+      <button
+        type="button"
+        class="picker-open-btn"
+        (click)="openCalendar()">
+
+        <ion-icon name="calendar-outline"></ion-icon>
+        <span>{{ formattedDate || 'Choose a date' }}</span>
+
+        <ion-icon
+          name="chevron-forward-outline"
+          class="picker-arrow">
+        </ion-icon>
+
+      </button>
+
+      <label class="field-label">Preferred Time</label>
+
+      <button
+        type="button"
+        class="picker-open-btn"
+        (click)="openTimePicker()">
+
+        <ion-icon name="time-outline"></ion-icon>
+        <span>{{ formattedTime || 'Choose a time' }}</span>
+
+        <ion-icon
+          name="chevron-forward-outline"
+          class="picker-arrow">
+        </ion-icon>
+
+      </button>
+
+      <p class="muted small schedule-note">
+        Choose your preferred
+        {{ draft.delivery.mode === 'pickup' ? 'pickup' : 'delivery' }}
+        schedule. Please allow at least one hour for preparation.
+      </p>
+
+      <div
+        class="schedule-preview"
+        *ngIf="draft.delivery.date && draft.delivery.slot">
+
+        <strong>Selected Schedule</strong>
+        <span>{{ formattedDate }} at {{ formattedTime }}</span>
+
+      </div>
+
+      <p class="schedule-error" *ngIf="scheduleError">
+        {{ scheduleError }}
+      </p>
+
+    </div>
+
+    <!-- PAYMENT METHOD - VISIBLE DIRECTLY -->
+    <h2 class="section-title">Payment Method</h2>
+
+    <div class="schedule-card">
+
+      <div class="payment-card">
+
+        <!-- CASH ON DELIVERY -->
+        <button
+          *ngIf="draft.delivery.mode === 'delivery'"
+          type="button"
+          class="payment-option"
+          [class.selected]="paymentMethod === 'cod'"
+          (click)="selectPayment('cod')">
+
+          <span class="payment-icon">💵</span>
+
+          <span class="payment-details">
+            <strong>Cash on Delivery</strong>
+            <small>Pay when your order arrives</small>
+          </span>
+
+          <span
+            class="payment-radio"
+            [class.checked]="paymentMethod === 'cod'">
+          </span>
+
+        </button>
+
+        <!-- PAY AT PICKUP -->
+        <button
+          *ngIf="draft.delivery.mode === 'pickup'"
+          type="button"
+          class="payment-option"
+          [class.selected]="paymentMethod === 'pickup'"
+          (click)="selectPayment('pickup')">
+
+          <span class="payment-icon"></span>
+
+          <span class="payment-details">
+            <strong>Pay at Pickup</strong>
+            <small>Pay when you collect your order</small>
+          </span>
+
+          <span
+            class="payment-radio"
+            [class.checked]="paymentMethod === 'pickup'">
+          </span>
+
+        </button>
+
+        <!-- ONLINE PAYMENT -->
+        <button
+          type="button"
+          class="payment-option"
+          [class.selected]="isOnlinePayment"
+          (click)="openOnlinePaymentPicker()">
+
+          <span class="payment-icon">💳</span>
+
+          <span class="payment-details">
+            <strong>Online Payment</strong>
+
+            <small>
+              {{ isOnlinePayment
+                ? paymentLabel
+                : 'GCash, BDO, BPI, GoTyme' }}
+            </small>
+          </span>
+
+          <ion-icon
+            name="chevron-forward-outline"
+            class="picker-arrow">
+          </ion-icon>
+
+        </button>
+
+      </div>
+
+      <div
+        class="schedule-preview"
+        *ngIf="isOnlinePayment">
+
+        <strong>{{ paymentLabel }} selected</strong>
+
+        <p class="muted small">
+          Online payments are not active yet.
+          Merchant setup and verification are required.
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- SUKI REWARDS -->
+    <h2 class="section-title">
+      Suki Rewards & Coupons
+    </h2>
+
+    <div class="schedule-card">
+
+      <div class="schedule-preview">
+        <strong>
+          {{ isSuki ? '🌟 Suki Member' : '🍪 Cookie Lover' }}
+        </strong>
+
+        <p class="muted small">
+          {{ isSuki
+            ? 'You are eligible for exclusive Suki rewards!'
+            : 'Keep ordering your favorite cookies to unlock Suki rewards.' }}
+        </p>
+      </div>
+
+      <label class="field-label">
+        Have a discount coupon?
+      </label>
+
+      <ion-item lines="none" class="cm-field">
+
+        <ion-input
+          label="Coupon Code"
+          labelPlacement="floating"
+          placeholder="Enter coupon code"
+          [(ngModel)]="couponInput"
+          [disabled]="!!appliedCoupon">
+        </ion-input>
+
+      </ion-item>
+
+      <ion-button
+        *ngIf="!appliedCoupon"
+        expand="block"
+        shape="round"
+        (click)="applyCoupon()">
+        Apply Coupon
+      </ion-button>
+
+      <ion-button
+        *ngIf="appliedCoupon"
+        expand="block"
+        shape="round"
+        fill="outline"
+        color="danger"
+        (click)="removeCoupon()">
+        Remove Coupon
+      </ion-button>
+
+      <p class="muted small" *ngIf="couponMessage">
+        {{ couponMessage }}
+      </p>
+
+      <div
+        class="schedule-preview"
+        *ngIf="appliedCoupon">
+
+        <strong> Coupon Preview</strong>
+
+        <p class="muted small">
+          {{ appliedCoupon.code }}
+        </p>
+
+        <p class="muted small" *ngIf="couponDiscount">
+          Potential savings: {{ couponDiscount | peso }}
+        </p>
+
+        <p class="muted small" *ngIf="shippingDiscount">
+          Shipping discount: {{ shippingDiscount | peso }}
+        </p>
+
+      </div>
+
+      <p class="muted small">
+        Demo codes: WELCOME10, COOKIE50, FREESHIP.
+        Suki codes require eligibility verification.
+        Coupon redemption is not active yet.
+      </p>
+
+    </div>
+
+   
+<!-- ==========================================
+     SENIOR CITIZEN & PWD DISCOUNT
+     ========================================== -->
+
+<h2 class="section-title">
+  Senior Citizen & PWD Discount
+</h2>
+
+<div class="schedule-card">
+
+  <p class="muted small">
+    Statutory discounts may apply only to qualifying
+    purchases and verified eligible customers.
+  </p>
+
+  <ion-item lines="none" class="cm-field">
+
+    <ion-select
+      label="Discount Category"
+      labelPlacement="floating"
+      interface="alert"
+      [interfaceOptions]="{
+        cssClass: 'cruminae-discount-alert',
+        header: 'Discount Category',
+        backdropDismiss: true
+      }"
+      [(ngModel)]="specialDiscount">
+
+      <ion-select-option value="none">
+        No Special Discount
+      </ion-select-option>
+
+      <ion-select-option value="senior">
+        Senior Citizen
+      </ion-select-option>
+
+      <ion-select-option value="pwd">
+        Person with Disability (PWD)
+      </ion-select-option>
+
+    </ion-select>
+
+  </ion-item>
+
+  <div
+    class="discount-verification-note"
+    *ngIf="specialDiscount !== 'none'">
+
+    <ion-icon name="information-circle-outline">
+    </ion-icon>
+
+    <p>
+      Your discount request requires staff verification.
+      Applicable discounts will be determined based on
+      eligibility and qualifying purchases.
+      Please do not enter ID numbers here.
+    </p>
+
+  </div>
+
+</div>
+
+    <!-- GIFT MODE -->
+    <h2 class="section-title">Gift Mode</h2>
+
+    <div class="schedule-card">
+
+      <ion-item lines="none" class="toggle-row">
+
+        <ion-toggle [(ngModel)]="draft.gift.enabled">
+
+          <strong>Make it a gift</strong>
+
+          <p class="muted small">
+            Gift wrap and personalized message card ·
+            {{ giftWrapFee | peso }}
+          </p>
+
+        </ion-toggle>
+
+      </ion-item>
+
+      <button
+        *ngIf="draft.gift.enabled"
+        type="button"
+        class="picker-open-btn"
+        (click)="openGiftPicker()">
+
+        <ion-icon name="gift-outline"></ion-icon>
+
+        <span>Customize your gift</span>
+
+        <ion-icon
+          name="chevron-forward-outline"
+          class="picker-arrow">
+        </ion-icon>
+
+      </button>
+
+      <div
+        class="schedule-preview"
+        *ngIf="draft.gift.enabled && draft.gift.message.trim()">
+
+        <strong>Your Gift Message</strong>
+
+        <p class="muted small">
+          To: {{ draft.gift.to || 'Not specified' }}
+        </p>
+
+        <p class="muted small">
+          From: {{ draft.gift.from || 'Not specified' }}
+        </p>
+
+        <p>{{ draft.gift.message }}</p>
+
+      </div>
+
+    </div>
+
+    <!-- LOYALTY CRUMBS -->
+    <div
+      class="crumb-row"
+      *ngIf="balance >= crumbsPerBlock">
+
+      <div class="grow">
+
+        <strong>Use loyalty crumbs</strong>
+
+        <p class="muted small">
+          {{ crumbsPerBlock }} crumbs =
+          {{ pesosPerBlock | peso }} off ·
+          you have {{ balance }}
+        </p>
+
+      </div>
+
+      <div class="stepper">
+
+        <button
+          type="button"
+          (click)="blocks(-1)"
+          [disabled]="!draft.crumbBlocks"
+          aria-label="Use fewer crumbs">
+
+          <ion-icon name="remove"></ion-icon>
+
+        </button>
+
+        <span>{{ draft.crumbBlocks }}</span>
+
+        <button
+          type="button"
+          (click)="blocks(1)"
+          [disabled]="draft.crumbBlocks >= maxBlocks"
+          aria-label="Use more crumbs">
+
+          <ion-icon name="add"></ion-icon>
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <div class="summary-card">
+
+      <h2 class="section-title">Order Summary</h2>
+
+      <div class="sum-row" *ngIf="boxSavings">
+        <span>Items</span>
+        <span>{{ net + boxSavings | peso }}</span>
+      </div>
+
+      <div class="sum-row saving" *ngIf="boxSavings">
+        <span>Box savings</span>
+        <span>−{{ boxSavings | peso }}</span>
+      </div>
+
+      <div class="sum-row" *ngIf="!boxSavings">
+        <span>Items</span>
+        <span>{{ net | peso }}</span>
+      </div>
+
+      <div class="sum-row saving" *ngIf="crumbDiscount">
+        <span>Crumbs redeemed</span>
+        <span>−{{ crumbDiscount | peso }}</span>
+      </div>
+
+      <div class="sum-row saving" *ngIf="couponDiscount">
+        <span>Coupon preview</span>
+        <span>−{{ couponDiscount | peso }}</span>
+      </div>
+
+      <div
+        class="sum-row"
+        *ngIf="draft.delivery.mode === 'delivery'">
+
+        <span>Delivery</span>
+
+        <span>
+          {{ baseDeliveryFee ? (baseDeliveryFee | peso) : 'Free' }}
+        </span>
+
+      </div>
+
+      <div
+        class="sum-row saving"
+        *ngIf="shippingDiscount">
+
+        <span>Shipping coupon preview</span>
+        <span>−{{ shippingDiscount | peso }}</span>
+
+      </div>
+
+      <div class="sum-row" *ngIf="giftFee">
+        <span>Gift wrap</span>
+        <span>{{ giftFee | peso }}</span>
+      </div>
+
+      <div
+        class="sum-row"
+        *ngIf="draft.delivery.date && draft.delivery.slot">
+
+        <span>Schedule</span>
+
+        <span>
+          {{ formattedDate }} · {{ formattedTime }}
+        </span>
+
+      </div>
+
+      <div class="sum-row">
+        <span>Payment</span>
+        <span>{{ paymentLabel }}</span>
+      </div>
+
+      <div
+        class="sum-row"
+        *ngIf="specialDiscount !== 'none'">
+
+        <span>Special discount</span>
+        <span>Pending verification</span>
+
+      </div>
+
+      <div class="sum-row total">
+        <span>Total</span>
+        <span>{{ total | peso }}</span>
+      </div>
+
+      <p class="muted small">
+        You'll earn {{ crumbsEarned }} crumbs with this order.
+        Free delivery from ₱500.
+      </p>
+
+    </div>
+
+  </ng-container>
+
+</ion-content>
+
+
+
+<!-- TERMS & CONDITIONS REQUIRED BEFORE EACH ORDER -->
+<ion-modal
+  [isOpen]="showTermsModal"
+  (didDismiss)="onTermsModalDismiss()"
+  cssClass="cruminae-terms-modal">
+  <ng-template>
+    <div class="terms-modal-content">
+      <div class="terms-modal-header">
+        <div>
+          <h2>Terms &amp; Conditions</h2>
+          <p>Please review the conditions before continuing.</p>
+        </div>
+        <button type="button" class="terms-close-btn" aria-label="Close terms" (click)="showTermsModal = false">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+
+      <div class="terms-scroll-content">
+        <h3>1. Orders and Confirmation</h3>
+        <p>Check your items, quantities, total price, delivery or pickup method, and scheduled date and time before placing an order. Orders are subject to item availability and confirmation.</p>
+        <h3>2. Prices and Payment</h3>
+        <p>The prices, applicable fees, discounts, and total shown at checkout are the amounts used to prepare your order. Choose an available payment method. Payment options that are not active cannot complete payment.</p>
+        <h3>3. Delivery and Pickup</h3>
+        <p>Provide an accurate delivery address or collect your order at the designated shop. Requested dates and times may require confirmation. Delays may occur because of circumstances outside Cruminae's reasonable control.</p>
+        <h3>4. Changes and Cancellation</h3>
+        <p>Contact customer support as soon as possible to request a change or cancellation. Requests may not be possible after preparation or dispatch has begun.</p>
+        <h3>5. Refunds and Order Issues</h3>
+        <p>Report missing, incorrect, damaged, or defective items promptly. Refunds, replacements, and other resolutions will be reviewed according to the circumstances and applicable consumer-protection laws.</p>
+        <h3>6. Loyalty Crumbs and Coupons</h3>
+        <p>Loyalty crumbs, promotional offers, and coupons are subject to eligibility and the rules shown in the service. A displayed discount is not a guarantee of redemption until validated.</p>
+        <h3>7. Senior Citizen and PWD Discounts</h3>
+        <p>Statutory discounts apply only to qualifying purchases and eligible customers after required verification, consistent with applicable Philippine law.</p>
+        <h3>8. Gift Orders</h3>
+        <p>Check the recipient details and gift message before placing a gift order. You are responsible for ensuring that the details you provide are correct and appropriate.</p>
+        <h3>9. Product Information</h3>
+        <p>Product descriptions and images are provided to help you choose. If you have allergy or ingredient concerns, contact Cruminae before ordering. Do not assume a product is allergen-free unless this is explicitly confirmed.</p>
+        <h3>10. Applicable Law</h3>
+        <p>These terms do not remove rights you have under applicable Philippine law. Any updates to these terms will be shown in the checkout or service.</p>
+      </div>
+
+      <div class="terms-consent-row">
+        <ion-checkbox slot="start" [(ngModel)]="termsAccepted"></ion-checkbox>
+        <ion-label class="ion-text-wrap">I read and agree to the <strong>Terms &amp; Conditions</strong>.</ion-label>
+      </div>
+
+      <div class="terms-modal-actions">
+        <ion-button fill="clear" color="medium" (click)="declineTerms()">Decline</ion-button>
+        <ion-button shape="round" [disabled]="!termsAccepted" (click)="acceptTermsAndContinue()">Agree &amp; Continue</ion-button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<!-- FOOTER -->
+<ion-footer class="cm-footer" *ngIf="lines.length">
+
+  <ion-toolbar>
+
+    <div class="footer-row">
+
+      <div>
+        <strong>{{ total | peso }}</strong>
+        <p class="muted small">{{ paymentLabel }}</p>
+      </div>
+
+      <ion-button
+        shape="round"
+        (click)="place()"
+        [disabled]="
+          !cart.readyForCheckout ||
+          !scheduleValid ||
+          isOnlinePayment ||
+          requiresSpecialVerification ||
+          !!appliedCoupon
+        ">
+
+        Place order
+
+      </ion-button>
+
+    </div>
+
+  </ion-toolbar>
+
+</ion-footer>
+
+<!-- FLOATING DATE CALENDAR -->
+<ion-modal
+  [isOpen]="showCalendar"
+  (didDismiss)="showCalendar = false"
+  cssClass="cruminae-picker-modal">
+
+  <ng-template>
+
+    <div class="picker-modal-content">
+
+      <div class="picker-modal-header">
+
+        <strong>Select a Date</strong>
+
+        <button
+          type="button"
+          class="picker-close-btn"
+          (click)="showCalendar = false"
+          aria-label="Close calendar">
+
+          <ion-icon name="close-outline"></ion-icon>
+
+        </button>
+
+      </div>
+
+      <ion-datetime
+        class="cruminae-datetime"
+        presentation="date"
+        [min]="minDate"
+        [value]="draft.delivery.date || undefined"
+        locale="en-PH"
+        [firstDayOfWeek]="1"
+        [showDefaultButtons]="false"
+        (ionChange)="onCalendarDateChange($event)">
+      </ion-datetime>
+
+    </div>
+
+  </ng-template>
+
+</ion-modal>
+
+<!-- FLOATING TIME PICKER -->
+<ion-modal
+  [isOpen]="showTimePicker"
+  (didDismiss)="showTimePicker = false"
+  cssClass="cruminae-picker-modal">
+
+  <ng-template>
+
+    <div class="picker-modal-content">
+
+      <div class="picker-modal-header">
+
+        <strong>Select a Time</strong>
+
+        <button
+          type="button"
+          class="picker-close-btn"
+          (click)="showTimePicker = false"
+          aria-label="Close time picker">
+
+          <ion-icon name="close-outline"></ion-icon>
+
+        </button>
+
+      </div>
+
+      <ion-datetime
+        class="cruminae-datetime"
+        presentation="time"
+        [value]="timePickerValue"
+        locale="en-PH"
+        hourCycle="h12"
+        [showDefaultButtons]="false"
+        (ionChange)="onTimePickerChange($event)">
+      </ion-datetime>
+
+      <div class="picker-actions">
+
+        <button
+          type="button"
+          class="picker-cancel-btn"
+          (click)="showTimePicker = false">
+
+          Cancel
+
+        </button>
+
+        <button
+          type="button"
+          class="picker-apply-btn"
+          (click)="applyTime()">
+
+          Apply Time
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </ng-template>
+
+</ion-modal>
+
+<!-- FLOATING ONLINE PAYMENT METHODS -->
+<ion-modal
+  [isOpen]="showPaymentPicker"
+  (didDismiss)="closePaymentPicker()"
+  cssClass="cruminae-picker-modal">
+
+  <ng-template>
+
+    <div class="picker-modal-content">
+
+      <div class="picker-modal-header">
+
+        <strong>Choose Online Payment</strong>
+
+        <button
+          type="button"
+          class="picker-close-btn"
+          (click)="closePaymentPicker()"
+          aria-label="Close online payment picker">
+
+          <ion-icon name="close-outline"></ion-icon>
+
+        </button>
+
+      </div>
+
+      <p class="muted small">
+        Select your preferred online payment method.
+      </p>
+
+      <div class="payment-card">
+
+        <!-- GCASH -->
+        <button
+          type="button"
+          class="payment-option"
+          [class.selected]="paymentMethod === 'gcash'"
+          (click)="selectPayment('gcash')">
+
+          <span class="payment-icon">📱</span>
+
+          <span class="payment-details">
+            <strong>GCash</strong>
+            <small>Mobile wallet payment</small>
+          </span>
+
+          <span
+            class="payment-radio"
+            [class.checked]="paymentMethod === 'gcash'">
+          </span>
+
+        </button>
+
+        <!-- BDO -->
+        <button
+          type="button"
+          class="payment-option"
+          [class.selected]="paymentMethod === 'bdo'"
+          (click)="selectPayment('bdo')">
+
+          <span class="payment-icon">🏦</span>
+
+          <span class="payment-details">
+            <strong>BDO Bank Transfer</strong>
+            <small>Pay using BDO Online</small>
+          </span>
+
+          <span
+            class="payment-radio"
+            [class.checked]="paymentMethod === 'bdo'">
+          </span>
+
+        </button>
+
+        <!-- BPI -->
+        <button
+          type="button"
+          class="payment-option"
+          [class.selected]="paymentMethod === 'bpi'"
+          (click)="selectPayment('bpi')">
+
+          <span class="payment-icon">🏦</span>
+
+          <span class="payment-details">
+            <strong>BPI Bank Transfer</strong>
+            <small>Pay using BPI Online</small>
+          </span>
+
+          <span
+            class="payment-radio"
+            [class.checked]="paymentMethod === 'bpi'">
+          </span>
+
+        </button>
+
+        <!-- GOTYME -->
+        <button
+          type="button"
+          class="payment-option"
+          [class.selected]="paymentMethod === 'gotyme'"
+          (click)="selectPayment('gotyme')">
+
+          <span class="payment-icon">💳</span>
+
+          <span class="payment-details">
+            <strong>GoTyme Bank</strong>
+            <small>Digital bank transfer</small>
+          </span>
+
+          <span
+            class="payment-radio"
+            [class.checked]="paymentMethod === 'gotyme'">
+          </span>
+
+        </button>
+
+      </div>
+
+      <p class="muted small" style="margin-top: 14px;">
+        Online payment processing is not active yet.
+        Verified merchant payment integration is required.
+      </p>
+
+    </div>
+
+  </ng-template>
+
+</ion-modal>
+
+<!-- FLOATING GIFT MODE -->
+<ion-modal
+  [isOpen]="showGiftPicker"
+  (didDismiss)="showGiftPicker = false"
+  cssClass="cruminae-picker-modal">
+
+  <ng-template>
+
+    <div class="picker-modal-content">
+
+      <div class="picker-modal-header">
+
+        <strong>🎁 Customize Your Gift</strong>
+
+        <button
+          type="button"
+          class="picker-close-btn"
+          (click)="showGiftPicker = false"
+          aria-label="Close gift picker">
+
+          <ion-icon name="close-outline"></ion-icon>
+
+        </button>
+
+      </div>
+
+      <p class="muted small">
+        Make your cookies extra special with
+        a personalized message card!
+      </p>
+
+      <label class="field-label">
+        Choose a Greeting Card
+      </label>
+
+      <div class="chip-row">
+
+        <ion-chip
+          *ngFor="let c of cards"
+          [outline]="draft.gift.card !== c.id"
+          [color]="draft.gift.card === c.id ? 'primary' : 'tertiary'"
+          (click)="draft.gift.card = c.id">
+
+          {{ c.emoji }}&nbsp;{{ c.label }}
+
+        </ion-chip>
+
+      </div>
+
+      <ion-item lines="none" class="cm-field">
+
+        <ion-input
+          label="To"
+          labelPlacement="floating"
+          [(ngModel)]="draft.gift.to">
+        </ion-input>
+
+      </ion-item>
+
+      <ion-item lines="none" class="cm-field">
+
+        <ion-input
+          label="From"
+          labelPlacement="floating"
+          [(ngModel)]="draft.gift.from">
+        </ion-input>
+
+      </ion-item>
+
+      <ion-item lines="none" class="cm-field">
+
+        <ion-textarea
+          label="Gift Message"
+          labelPlacement="floating"
+          [(ngModel)]="draft.gift.message"
+          maxlength="140"
+          [counter]="true"
+          rows="3">
+        </ion-textarea>
+
+      </ion-item>
+
+      <div class="picker-actions">
+
+        <button
+          type="button"
+          class="picker-cancel-btn"
+          (click)="showGiftPicker = false">
+
+          Cancel
+
+        </button>
+
+        <button
+          type="button"
+          class="picker-apply-btn"
+          (click)="saveGift()">
+
+          Save Gift
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </ng-template>
+
+</ion-modal>
+
+
+
+

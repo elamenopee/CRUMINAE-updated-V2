@@ -1,0 +1,40 @@
+/* Cruminae palette mapped to Ionic colors. */
+:root {
+  --cm-blush: #F0D6DC;
+  --cm-blush-line: #E3B9C4;
+  --cm-gold: #C9973F;
+  --cm-gold-soft: #F4E7CF;
+  --cm-cream: #FAF6F1;
+  --cm-espresso: #3F2E22;
+  --cm-espresso-soft: #7A6656;
+  --cm-line: #EDE2D6;
+
+  --ion-background-color: #FAF6F1;
+  --ion-text-color: #3F2E22;
+
+  /* primary = gold */
+  --ion-color-primary: #C9973F;
+  --ion-color-primary-rgb: 201, 151, 63;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #b18538;
+  --ion-color-primary-tint: #cfa252;
+
+  /* secondary = blush */
+  --ion-color-secondary: #F0D6DC;
+  --ion-color-secondary-rgb: 240, 214, 220;
+  --ion-color-secondary-contrast: #3F2E22;
+  --ion-color-secondary-contrast-rgb: 63, 46, 34;
+  --ion-color-secondary-shade: #d3bcc2;
+  --ion-color-secondary-tint: #f2dae0;
+
+  /* tertiary = espresso */
+  --ion-color-tertiary: #3F2E22;
+  --ion-color-tertiary-rgb: 63, 46, 34;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #382a1e;
+  --ion-color-tertiary-tint: #52433a;
+
+  --ion-font-family: 'Nunito', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+}

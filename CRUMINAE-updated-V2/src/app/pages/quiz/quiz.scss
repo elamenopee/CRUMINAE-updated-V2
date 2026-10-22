@@ -1,0 +1,21 @@
+
+.allergen-warning {
+  background: #fff3dc;
+  border: 1px solid #e4bd68;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 16px 0;
+  color: #674b29;
+
+  strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}

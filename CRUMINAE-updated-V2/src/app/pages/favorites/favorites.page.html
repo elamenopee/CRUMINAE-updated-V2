@@ -1,0 +1,19 @@
+<app-page-header title="Favorites"></app-page-header>
+
+<ion-content class="cm-content">
+  <ng-container *ngIf="favorites$ | async as list">
+    <div class="empty" *ngIf="!list.length">
+      <span>💗</span>
+      <h3>No favorites yet</h3>
+      <p>Tap the heart on any cookie to save it here.</p>
+      <ion-button shape="round" routerLink="/pages/products">Find cookies</ion-button>
+    </div>
+
+    <ng-container *ngIf="list.length">
+      <div class="cookie-grid">
+        <app-cookie-card *ngFor="let c of list" [cookie]="c"></app-cookie-card>
+      </div>
+      <ion-button expand="block" shape="round" class="cm-cta" (click)="addAll(list)">Add all to cart</ion-button>
+    </ng-container>
+  </ng-container>
+</ion-content>

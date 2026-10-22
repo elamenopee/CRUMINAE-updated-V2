@@ -1,0 +1,16 @@
+<app-page-header title="About the App"></app-page-header>
+
+<ion-content class="cm-content">
+  <section class="hero">
+    <h1>Cruminae</h1>
+    <p>Small-batch premium cookies, baked fresh through the day and delivered to your door.</p>
+  </section>
+
+  <h2 class="section-title">What you can do</h2>
+  <div class="feature" *ngFor="let f of features">
+    <ion-icon [name]="f.icon"></ion-icon>
+    <div><h3>{{ f.title }}</h3><p class="muted small">{{ f.text }}</p></div>
+  </div>
+
+  <p class="muted small center">Version {{ version }}</p>
+</ion-content>

@@ -1,0 +1,166 @@
+
+<ion-content class="signup-content">
+  <div class="signup-container">
+
+    <!-- Decorative shapes -->
+    <div class="pink-blob blob-top"></div>
+    <div class="pink-blob blob-bottom"></div>
+
+    <!-- Brand -->
+    <div class="brand-row">
+      <img src="assets/icon/logo.png" alt="Cruminae Logo" />
+
+      <div class="brand-copy">
+        <span class="brand-name">Cruminae</span>
+        <span class="brand-tagline">COOKIES THAT FEEL LIKE HOME</span>
+      </div>
+    </div>
+
+    <!-- Cookie decoration -->
+    <div class="cookie-decoration" aria-hidden="true">
+      <span class="cookie-main">🍪</span>
+      <span class="sparkle sparkle-one">✦</span>
+      <span class="sparkle sparkle-two">✧</span>
+      <span class="sparkle sparkle-three">✦</span>
+    </div>
+
+    <!-- Heading -->
+    <div class="signup-header">
+      <span class="eyebrow">YOUR SWEET JOURNEY STARTS HERE</span>
+
+      <h1>Join the <span>Cookie Family!</span></h1>
+
+      <p>
+        Create your account and enjoy every sweet moment
+        with Cruminae.
+      </p>
+    </div>
+
+    <!-- Registration form -->
+    <div class="form-card">
+      <form (ngSubmit)="signup()">
+
+        <!-- Full name -->
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+
+          <div class="input-wrapper">
+            <ion-icon name="person-outline"></ion-icon>
+
+            <input
+              id="signup-name"
+              type="text"
+              name="name"
+              [(ngModel)]="name"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="signup-email">Email Address</label>
+
+          <div class="input-wrapper">
+            <ion-icon name="mail-outline"></ion-icon>
+
+            <input
+              id="signup-email"
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+
+          <div class="input-wrapper">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+
+            <input
+              id="signup-password"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="At least 8 characters"
+              autocomplete="new-password"
+              required
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="showPassword = !showPassword"
+              [attr.aria-label]="showPassword ? 'Hide passwords' : 'Show passwords'">
+              <ion-icon
+                [name]="showPassword ? 'eye-off-outline' : 'eye-outline'">
+              </ion-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirm password -->
+        <div class="form-group">
+          <label for="signup-confirm">Confirm Password</label>
+
+          <div class="input-wrapper">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+
+            <input
+              id="signup-confirm"
+              [type]="showPassword ? 'text' : 'password'"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              placeholder="Re-enter your password"
+              autocomplete="new-password"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Password hint -->
+        <p class="password-hint">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          Use at least 8 characters for your password.
+        </p>
+
+        <!-- Error -->
+        <p class="error-message" *ngIf="error" role="alert">
+          {{ error }}
+        </p>
+
+        <!-- Submit -->
+        <button type="submit" class="signup-button">
+          Create Account
+          <span aria-hidden="true">→</span>
+        </button>
+
+      </form>
+
+      <!-- Login -->
+      <p class="login-link">
+        Already have an account?
+        <a routerLink="/login">Log In</a>
+      </p>
+    </div>
+
+    <!-- Guest access -->
+    <a routerLink="/pages/dashboard" class="back-link">
+      <span aria-hidden="true">←</span>
+      Continue as Guest
+    </a>
+
+    <p class="bottom-note">
+      Baked with love, just for you ♡
+    </p>
+
+  </div>
+</ion-content>

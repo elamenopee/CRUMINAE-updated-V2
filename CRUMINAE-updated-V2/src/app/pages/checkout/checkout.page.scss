@@ -1,0 +1,879 @@
+/* ========================================
+   CRUMINAE CHECKOUT
+======================================== */
+
+/* DATE AND TIME CARD */
+.schedule-card {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 16px;
+  margin: 12px 0 20px;
+
+  background: #ffffff;
+  border: 1px solid #f0e3da;
+  border-radius: 16px;
+}
+
+.field-label {
+  display: block;
+  margin: 0;
+
+  font-size: 13px;
+  font-weight: 700;
+  color: #4b382e;
+}
+
+/* OPEN DATE AND TIME BUTTON */
+.picker-open-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  min-height: 52px;
+  box-sizing: border-box;
+  padding: 13px 15px;
+
+  background: #fff8f8;
+  border: 1px solid #ead7df;
+  border-radius: 12px;
+
+  color: #604b42;
+  font-family: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+
+  ion-icon {
+    font-size: 20px;
+    color: #b77990;
+    flex-shrink: 0;
+  }
+
+  span {
+    flex: 1;
+  }
+
+  .picker-arrow {
+    font-size: 17px;
+  }
+
+  &:hover {
+    background: #fff0f4;
+    border-color: #d9a4b7;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #c88fa4;
+    outline-offset: 2px;
+  }
+}
+
+/* SCHEDULE NOTE */
+.schedule-note {
+  margin: 2px 0;
+  line-height: 1.6;
+}
+
+/* SELECTED SCHEDULE */
+.schedule-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  padding: 13px;
+  background: #fff0f4;
+  border-radius: 11px;
+
+  color: #704858;
+  font-size: 13px;
+
+  strong {
+    font-weight: 700;
+  }
+}
+
+/* SCHEDULE ERROR */
+.schedule-error {
+  color: #c84c61;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ========================================
+   PAYMENT METHOD
+======================================== */
+
+.payment-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 15px;
+  margin: 12px 0 20px;
+
+  background: #ffffff;
+  border: 1px solid #f0e3da;
+  border-radius: 16px;
+}
+
+.payment-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 100%;
+  min-height: 70px;
+  box-sizing: border-box;
+  gap: 12px;
+  padding: 14px;
+
+  background: #fffaf8;
+  border: 1px solid #eaded8;
+  border-radius: 12px;
+
+  text-align: left;
+  font-family: inherit;
+  color: #4b382e;
+  cursor: pointer;
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+
+  &.selected {
+    background: #fff0f4;
+    border-color: #cc92a6;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #cc92a6;
+    outline-offset: 2px;
+  }
+}
+
+.payment-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+  width: 36px;
+  font-size: 25px;
+}
+
+.payment-details {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+
+  min-width: 0;
+  gap: 5px;
+
+  strong {
+    display: block;
+    color: #4b382e;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  small {
+    display: block;
+    color: #907b71;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+.payment-radio {
+  display: block;
+  flex-shrink: 0;
+
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+
+  border: 2px solid #cbb6bc;
+  border-radius: 50%;
+  background: #ffffff;
+
+  &.checked {
+    border-color: #c88fa4;
+    background: #c88fa4;
+    box-shadow: inset 0 0 0 4px #ffffff;
+  }
+}
+
+/* ========================================
+   MOBILE RESPONSIVENESS
+======================================== */
+
+@media (max-width: 480px) {
+  .schedule-card,
+  .payment-card {
+    padding: 13px;
+    border-radius: 14px;
+  }
+
+  .picker-open-btn {
+    padding: 12px;
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  .payment-option {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .payment-details strong {
+    font-size: 13px;
+  }
+}
+
+/* FLOATING PAYMENT & GIFT PICKERS */
+
+ion-modal.cruminae-picker-modal {
+  --width: min(92vw, 440px);
+  --height: auto;
+  --max-height: 85vh;
+  --border-radius: 22px;
+  --box-shadow: 0 18px 50px rgba(90, 40, 65, 0.2);
+}
+
+ion-modal.cruminae-picker-modal::part(content) {
+  overflow-y: auto;
+}
+
+.picker-modal-content {
+  padding: 20px;
+  background: #fffaf7;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.picker-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  color: #8b4767;
+}
+
+.picker-modal-header strong {
+  font-size: 18px;
+}
+
+.payment-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payment-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #eed9e1;
+  cursor: pointer;
+  color: #543343;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.payment-option.selected {
+  background: #fff0f5;
+  border-color: #d884a4;
+}
+
+.payment-icon {
+  font-size: 24px;
+}
+
+.payment-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.payment-details small {
+  color: #8d7a83;
+}
+
+.payment-radio {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #d6a8bb;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.payment-radio.checked {
+  border: 5px solid #bf7395;
+}
+
+.picker-modal-content .cm-field {
+  margin-top: 12px;
+  --background: #ffffff;
+  border: 1px solid #eed9e1;
+  border-radius: 12px;
+}
+
+.picker-modal-content .chip-row {
+  margin: 12px 0 18px;
+}
+
+.picker-modal-content .picker-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.picker-modal-content .picker-actions button {
+  flex: 1;
+}
+/* ONLINE PAYMENT SUBMENU */
+
+.payment-back-btn {
+  margin-bottom: 16px;
+  justify-content: flex-start;
+  color: #a35b7c;
+  font-weight: 600;
+}
+
+.payment-back-btn ion-icon {
+  font-size: 20px;
+}
+
+.payment-card .picker-arrow {
+  margin-left: auto;
+  font-size: 19px;
+  color: #bd7897;
+}
+
+.payment-option {
+  cursor: pointer;
+}
+
+.payment-option:active {
+  transform: scale(0.99);
+}
+
+/* =========================================
+   CRUMINAE PAYMENT METHOD
+   ========================================= */
+
+.schedule-card .payment-card,
+.picker-modal-content .payment-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-option {
+  width: 100%;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  background: #ffffff;
+  border: 1px solid #efdce3;
+  border-radius: 15px;
+
+  text-align: left;
+  color: #59434b;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.payment-option:hover {
+  background: #fff8fa;
+  border-color: #dfa9be;
+}
+
+.payment-option.selected {
+  background: #fff0f5;
+  border-color: #d884a4;
+}
+
+.payment-option:active {
+  transform: scale(0.99);
+}
+
+.payment-icon {
+  font-size: 24px;
+  width: 32px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.payment-details {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.payment-details strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: #59434b;
+}
+
+.payment-details small {
+  font-size: 12px;
+  color: #9b8890;
+  line-height: 1.4;
+}
+
+.payment-radio {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+
+  border: 2px solid #d8a7bb;
+  border-radius: 50%;
+}
+
+.payment-radio.checked {
+  border: 5px solid #bd7395;
+}
+
+.payment-option .picker-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 20px;
+  color: #bd7897;
+}
+
+/* Floating online payment modal */
+ion-modal.cruminae-picker-modal {
+  --width: min(92vw, 440px);
+  --height: auto;
+  --max-height: 85vh;
+  --border-radius: 22px;
+  --box-shadow: 0 18px 50px rgba(90, 40, 65, 0.2);
+}
+
+ion-modal.cruminae-picker-modal::part(content) {
+  overflow-y: auto;
+}
+
+.picker-modal-content {
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 20px;
+  background: #fffaf7;
+}
+
+.picker-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.picker-modal-header strong {
+  font-size: 18px;
+  color: #674653;
+}
+
+.picker-modal-content .cm-field {
+  margin-top: 12px;
+  --background: #ffffff;
+  border: 1px solid #eed9e1;
+  border-radius: 12px;
+}
+
+.picker-modal-content .chip-row {
+  margin: 12px 0 18px;
+}
+
+.picker-modal-content .picker-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.picker-modal-content .picker-actions button {
+  flex: 1;
+}
+
+@media (max-width: 360px) {
+  .payment-option {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .payment-details strong {
+    font-size: 13px;
+  }
+}
+
+/* ==========================================
+   CRUMINAE FLOATING MODALS
+   FIX SIDE SPACING FOR ALL PICKERS
+   ========================================== */
+
+/* MAIN FLOATING MODAL */
+ion-modal.cruminae-picker-modal {
+  --width: calc(100% - 40px);
+  --max-width: 420px;
+  --height: auto;
+  --max-height: 85vh;
+  --border-radius: 22px;
+  --background: #fffaf7;
+  --box-shadow: 0 15px 45px rgba(70, 35, 50, 0.18);
+}
+
+/* MODAL CONTAINER */
+ion-modal.cruminae-picker-modal::part(content) {
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+/* INNER SPACING */
+ion-modal.cruminae-picker-modal .picker-modal-content {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 24px 24px 26px;
+
+  max-height: 85vh;
+  overflow-y: auto;
+
+  background: #fffaf7;
+}
+
+/* HEADER */
+ion-modal.cruminae-picker-modal .picker-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+ion-modal.cruminae-picker-modal .picker-modal-header strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: #654650;
+}
+
+/* CLOSE BUTTON */
+ion-modal.cruminae-picker-modal .picker-close-btn {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #f8e4ec;
+  color: #ad6a88;
+}
+
+ion-modal.cruminae-picker-modal .picker-close-btn ion-icon {
+  font-size: 20px;
+}
+
+/* ==========================================
+   PAYMENT METHOD
+   ========================================== */
+
+ion-modal.cruminae-picker-modal .payment-card {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 14px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  background: #ffffff;
+
+  border: 1px solid #f1e3db;
+  border-radius: 17px;
+}
+
+ion-modal.cruminae-picker-modal .payment-option {
+  width: 100%;
+  box-sizing: border-box;
+
+  min-height: 70px;
+  padding: 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  border: 1px solid #f0dce4;
+  border-radius: 14px;
+
+  background: #ffffff;
+  text-align: left;
+}
+
+ion-modal.cruminae-picker-modal .payment-option.selected {
+  background: #fff0f5;
+  border-color: #d884a4;
+}
+
+ion-modal.cruminae-picker-modal .payment-details {
+  flex: 1;
+  min-width: 0;
+}
+
+ion-modal.cruminae-picker-modal .payment-details strong {
+  font-size: 14px;
+  color: #59434b;
+}
+
+ion-modal.cruminae-picker-modal .payment-details small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #9b8890;
+}
+
+/* ==========================================
+   CALENDAR AND TIME PICKER
+   ========================================== */
+
+ion-modal.cruminae-picker-modal ion-datetime {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  margin: 0 auto;
+
+  --background: #fffaf7;
+  --background-rgb: 255, 250, 247;
+  --wheel-highlight-background: #f9e6ed;
+  --wheel-fade-background-rgb: 255, 250, 247;
+}
+
+/* ==========================================
+   GIFT MODE FIELDS
+   ========================================== */
+
+ion-modal.cruminae-picker-modal .cm-field {
+  width: 100%;
+  box-sizing: border-box;
+
+  margin: 12px 0;
+
+  --background: #ffffff;
+
+  border: 1px solid #efdee4;
+  border-radius: 12px;
+}
+
+ion-modal.cruminae-picker-modal .chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  margin: 12px 0 18px;
+}
+
+/* ==========================================
+   ACTION BUTTONS
+   ========================================== */
+
+ion-modal.cruminae-picker-modal .picker-actions {
+  display: flex;
+  gap: 12px;
+
+  margin-top: 20px;
+}
+
+ion-modal.cruminae-picker-modal .picker-actions button {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ==========================================
+   SMALL MOBILE SCREENS
+   ========================================== */
+
+@media (max-width: 390px) {
+  ion-modal.cruminae-picker-modal {
+    --width: calc(100% - 32px);
+  }
+
+  ion-modal.cruminae-picker-modal .picker-modal-content {
+    padding: 20px 18px 22px;
+  }
+
+  ion-modal.cruminae-picker-modal .payment-card {
+    padding: 10px;
+  }
+
+  ion-modal.cruminae-picker-modal .payment-option {
+    padding: 12px 10px;
+    gap: 10px;
+  }
+}
+
+/* ==========================================
+   SENIOR CITIZEN & PWD DISCOUNT POPUP
+   PINK AND CREAM THEME
+   ========================================== */
+
+/* Alert popup */
+ion-alert.cruminae-discount-alert {
+  --background: #fffaf7;
+  --width: min(90vw, 380px);
+  --max-width: 380px;
+  --backdrop-opacity: 0.45;
+}
+
+/* Rounded popup */
+ion-alert.cruminae-discount-alert::part(content) {
+  border-radius: 22px;
+  box-shadow: 0 15px 45px rgba(95, 48, 68, 0.18);
+}
+
+/* Title */
+ion-alert.cruminae-discount-alert .alert-title {
+  color: #674653;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+/* Radio options */
+ion-alert.cruminae-discount-alert .alert-radio-group {
+  border-color: #f0dce4;
+}
+
+/* Option text */
+ion-alert.cruminae-discount-alert .alert-radio-label {
+  color: #674653;
+  font-size: 14px;
+}
+
+/* Radio circle */
+ion-alert.cruminae-discount-alert .alert-radio-icon {
+  border-color: #d8a7bb;
+}
+
+/* Selected radio */
+ion-alert.cruminae-discount-alert
+.alert-radio-button[aria-checked="true"]
+.alert-radio-icon {
+  border-color: #c8759a;
+}
+
+/* Selected radio inner circle */
+ion-alert.cruminae-discount-alert
+.alert-radio-button[aria-checked="true"]
+.alert-radio-inner {
+  background: #c8759a;
+}
+
+/* Selected row */
+ion-alert.cruminae-discount-alert
+.alert-radio-button[aria-checked="true"] {
+  background: #fff0f5;
+}
+
+/* Cancel and OK */
+ion-alert.cruminae-discount-alert .alert-button {
+  color: #b96c8e;
+  font-weight: 700;
+}
+
+/* Button pressed */
+ion-alert.cruminae-discount-alert
+.alert-button:active {
+  background: #fce7ef;
+}
+
+/* More breathing room */
+ion-alert.cruminae-discount-alert .alert-radio-button {
+  min-height: 54px;
+}
+
+
+/* TERMS & CONDITIONS MODAL */
+ion-modal.cruminae-terms-modal {
+  --width: calc(100% - 32px);
+  --max-width: 480px;
+  --height: min(82vh, 760px);
+  --border-radius: 24px;
+  --backdrop-opacity: 0.55;
+}
+
+ion-modal.cruminae-terms-modal::part(content) {
+  background: #fffaf7;
+  border-radius: 24px;
+}
+
+.terms-modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px 20px 16px;
+  color: #4b382e;
+  background: #fffaf7;
+  box-sizing: border-box;
+}
+
+.terms-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+}
+
+.terms-modal-header h2 { margin: 0 0 6px; font-size: 20px; font-weight: 800; }
+.terms-modal-header p, .terms-updated { margin: 0; color: #80695e; font-size: 13px; }
+.terms-close-btn { border: 0; border-radius: 50%; width: 36px; height: 36px; flex: 0 0 36px; background: #f8e5ec; color: #ad5e80; font-size: 22px; }
+.terms-scroll-content { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px 2px 16px 0; }
+.terms-scroll-content h3 { margin: 16px 0 6px; color: #a94e75; font-size: 14px; font-weight: 800; }
+.terms-scroll-content p { margin: 0; font-size: 13px; line-height: 1.6; }
+.terms-updated { margin-bottom: 8px !important; }
+.terms-consent-row { display: flex; align-items: center; gap: 12px; padding: 12px 0 8px; border-top: 1px solid #f0dfd8; font-size: 14px; line-height: 1.45; }
+.terms-consent-row ion-checkbox { flex: 0 0 auto; --checkbox-background-checked: #c985a0; --border-color-checked: #c985a0; }
+.terms-modal-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 8px; }
+.terms-modal-actions ion-button:last-child { --background: #c985a0; --color: #fff; font-weight: 700; }

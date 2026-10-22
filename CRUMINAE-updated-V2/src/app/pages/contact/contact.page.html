@@ -1,0 +1,21 @@
+<app-page-header title="Contact Us"></app-page-header>
+
+<ion-content class="cm-content">
+  <div class="contact-actions">
+    <a [href]="'tel:' + info.phone"><ion-icon name="call-outline"></ion-icon><span>Call</span></a>
+    <a [href]="'mailto:' + info.email"><ion-icon name="mail-outline"></ion-icon><span>Email</span></a>
+    <a [href]="'https://maps.google.com/?q=' + info.address" target="_blank" rel="noopener"><ion-icon name="location-outline"></ion-icon><span>Map</span></a>
+  </div>
+
+  <h2 class="section-title">Shop hours</h2>
+  <div class="summary-card">
+    <div class="sum-row" *ngFor="let h of hours"><span>{{ h.days }}</span><span>{{ h.time }}</span></div>
+    <p class="muted small">{{ info.address }}</p>
+  </div>
+
+  <h2 class="section-title">Send us a message</h2>
+  <ion-item lines="none" class="cm-field"><ion-input label="Name" labelPlacement="floating" [(ngModel)]="form.name"></ion-input></ion-item>
+  <ion-item lines="none" class="cm-field"><ion-input label="Email" type="email" labelPlacement="floating" [(ngModel)]="form.email"></ion-input></ion-item>
+  <ion-item lines="none" class="cm-field"><ion-textarea label="Message" labelPlacement="floating" rows="4" [(ngModel)]="form.message"></ion-textarea></ion-item>
+  <ion-button expand="block" shape="round" class="cm-cta" (click)="send()">Send message</ion-button>
+</ion-content>

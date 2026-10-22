@@ -1,0 +1,106 @@
+
+<article class="cookie-card" [class.compact]="compact">
+
+  <!-- COOKIE IMAGE -->
+  <div
+    class="art"
+    [style.background]="cookie.color + '2E'">
+
+    <img
+      *ngIf="cookie.image && !imageFailed; else fallbackArt"
+      [src]="cookie.image"
+      [alt]="cookie.name"
+      loading="lazy"
+      decoding="async"
+      (error)="imageFailed = true"
+    />
+
+    <ng-template #fallbackArt>
+      <span class="emoji">{{ cookie.emoji }}</span>
+    </ng-template>
+
+    <!-- FLOATING FAVORITE BUTTON -->
+    <button
+      class="heart"
+      [class.is-favorite]="fav.has(cookie.id)"
+      type="button"
+      (click)="toggleFav()"
+      [attr.aria-pressed]="fav.has(cookie.id)"
+      [attr.aria-label]="
+        fav.has(cookie.id)
+          ? 'Remove from favorites'
+          : 'Add to favorites'
+      ">
+
+      <ion-icon
+        [name]="fav.has(cookie.id) ? 'heart' : 'heart-outline'">
+      </ion-icon>
+
+    </button>
+
+  </div>
+
+  <!-- COOKIE DETAILS -->
+  <div class="body">
+
+    <h3>{{ cookie.name }}</h3>
+
+    <p class="desc" *ngIf="!compact">
+      {{ cookie.description }}
+    </p>
+
+    <!-- INGREDIENTS -->
+    <details
+      class="ingredients-dropdown"
+      *ngIf="!compact">
+
+      <summary>Ingredients</summary>
+
+      <ul
+        *ngIf="cookie.ingredients?.length; else noIngredients">
+
+        <li *ngFor="let ingredient of cookie.ingredients">
+          {{ ingredient }}
+        </li>
+
+      </ul>
+
+      <ng-template #noIngredients>
+        <p>Ingredient details coming soon.</p>
+      </ng-template>
+
+    </details>
+
+    <!-- PRICE AND CART -->
+    <div class="buy">
+
+      <strong *ngIf="purchasable; else pendingPrice">
+        {{ cookie.price | peso }}
+      </strong>
+
+      <ng-template #pendingPrice>
+        <span class="pending-price">
+          Price coming soon
+        </span>
+      </ng-template>
+
+      <ion-button
+        size="small"
+        shape="round"
+        (click)="add()"
+        [disabled]="!purchasable">
+
+        <ion-icon
+          slot="start"
+          name="add-outline">
+        </ion-icon>
+
+        Add
+
+      </ion-button>
+
+    </div>
+
+  </div>
+
+</article>

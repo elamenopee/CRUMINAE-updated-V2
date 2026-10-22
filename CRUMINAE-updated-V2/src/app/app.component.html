@@ -1,0 +1,196 @@
+
+<ion-app>
+
+  <!-- SIDEBAR MENU -->
+  <ion-menu
+    contentId="main-content"
+    type="overlay"
+    class="cruminae-menu">
+
+    <ion-content class="menu-content">
+
+      <!-- LOGO -->
+      <div class="menu-header">
+        <div class="logo-circle">
+          <img
+            src="assets/icon/logo.png"
+            alt="Cruminae Logo"
+          />
+        </div>
+
+        <h2>Cruminae</h2>
+        <p>Premium Cookie Products</p>
+      </div>
+      
+
+      <!-- MY PROFILE -->
+      <ion-list lines="none" class="profile-list">
+
+        <ion-menu-toggle auto-hide="false">
+
+          <ion-item
+            routerDirection="root"
+            [routerLink]="profilePage.url"
+            routerLinkActive="selected-item"
+            detail="true"
+            class="profile-item">
+
+            <ion-icon
+              slot="start"
+              [name]="profilePage.icon">
+            </ion-icon>
+
+            <ion-label>
+              <h3>My Profile</h3>
+              <p>View &amp; edit account</p>
+            </ion-label>
+
+          </ion-item>
+
+        </ion-menu-toggle>
+
+      </ion-list>
+
+      <!-- MAIN MENU -->
+      <ion-list lines="none" class="menu-list">
+
+        <ion-list-header>Main Menu</ion-list-header>
+
+        <ion-menu-toggle
+          auto-hide="false"
+          *ngFor="let p of corePages">
+
+          <ion-item
+            routerDirection="root"
+            [routerLink]="p.url"
+            routerLinkActive="selected-item"
+            detail="false">
+
+            <ion-icon
+              slot="start"
+              [name]="p.icon">
+            </ion-icon>
+
+            <ion-label>
+              {{ p.title }}
+            </ion-label>
+
+          </ion-item>
+
+        </ion-menu-toggle>
+
+      </ion-list>
+
+      <!-- APP MODULES -->
+      <ion-list lines="none" class="menu-list">
+
+        <ion-list-header>App Modules</ion-list-header>
+
+        <ion-menu-toggle
+          auto-hide="false"
+          *ngFor="let p of modulePages">
+
+          <ion-item
+            routerDirection="root"
+            [routerLink]="p.url"
+            routerLinkActive="selected-item"
+            detail="false">
+
+            <ion-icon
+              slot="start"
+              [name]="p.icon">
+            </ion-icon>
+
+            <ion-label>
+              {{ p.title }}
+            </ion-label>
+
+            <!-- SHOPPING CART BADGE -->
+            <ion-badge
+              slot="end"
+              class="cart-badge"
+              *ngIf="
+                p.url === '/pages/cart' &&
+                (cartCount$ | async) as n
+              ">
+              {{ n }}
+            </ion-badge>
+
+          </ion-item>
+
+        </ion-menu-toggle>
+
+      </ion-list>
+
+      <!-- AUTHENTICATION BUTTONS -->
+      <div class="cr-sidebar-auth">
+
+        <!-- NOT LOGGED IN: LOG IN + SIGN UP -->
+        <ng-container *ngIf="!auth.isLoggedIn">
+
+          <ion-menu-toggle auto-hide="true">
+
+            <a
+              routerLink="/login"
+              class="cr-sidebar-login">
+
+              <ion-icon name="log-in-outline"></ion-icon>
+              <span>Log In</span>
+
+            </a>
+
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="true">
+
+            <a
+              routerLink="/signup"
+              class="cr-sidebar-signup">
+
+              <ion-icon name="person-add-outline"></ion-icon>
+              <span>Sign Up</span>
+
+            </a>
+
+          </ion-menu-toggle>
+
+        </ng-container>
+
+        <!-- LOGGED IN: LOG OUT ONLY -->
+        <ng-container *ngIf="auth.isLoggedIn">
+
+          <ion-menu-toggle
+            auto-hide="true"
+            class="logout-toggle">
+
+            <button
+              type="button"
+              class="cr-sidebar-logout"
+              (click)="logout()">
+
+              <ion-icon name="log-out-outline"></ion-icon>
+              <span>Log Out</span>
+
+            </button>
+
+          </ion-menu-toggle>
+
+        </ng-container>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="menu-footer">
+        <p>Cruminae &copy; 2026</p>
+      </div>
+
+    </ion-content>
+
+  </ion-menu>
+
+  <!-- MAIN PAGE CONTENT -->
+  <ion-router-outlet
+    id="main-content">
+  </ion-router-outlet>
+
+</ion-app>

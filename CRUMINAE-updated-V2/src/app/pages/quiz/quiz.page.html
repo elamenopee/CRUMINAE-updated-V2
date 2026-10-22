@@ -1,0 +1,166 @@
+
+<app-page-header title="Taste Quiz"></app-page-header>
+
+<ion-content class="cm-content">
+
+  <!-- QUIZ QUESTIONS -->
+  <section *ngIf="stage === 'quiz'" class="quiz">
+
+    <ion-progress-bar
+      [value]="step / questions.length">
+    </ion-progress-bar>
+
+    <p class="muted small">
+      Question {{ step + 1 }} of {{ questions.length }}
+    </p>
+
+    <h1>{{ question.q }}</h1>
+
+    <button
+      type="button"
+      class="quiz-option"
+      *ngFor="let o of question.options"
+      (click)="answer(o)">
+
+      <span>{{ o.emoji }}</span>
+      {{ o.label }}
+
+    </button>
+
+  </section>
+
+  <!-- ALLERGEN SELECTION -->
+  <section *ngIf="stage === 'allergy'" class="quiz">
+
+    <ion-progress-bar [value]="1"></ion-progress-bar>
+
+    <h1>Anything we should leave out?</h1>
+
+    <p class="muted">
+      Select ingredients you need to avoid.
+      We'll prioritize verified safe products.
+      If none are available, we'll still show
+      personality-based suggestions with a
+      safety warning.
+    </p>
+
+    <div class="chip-row">
+
+      <ion-chip
+        *ngFor="let a of allergens"
+        [outline]="!avoid.has(a)"
+        [color]="avoid.has(a) ? 'primary' : 'tertiary'"
+        (click)="toggle(a)">
+
+        <ion-label>{{ a }}</ion-label>
+
+      </ion-chip>
+
+    </div>
+
+    <ion-button
+      expand="block"
+      shape="round"
+      (click)="finish()">
+
+      See My Matches
+
+    </ion-button>
+
+  </section>
+
+  <!-- QUIZ RESULTS -->
+  <section *ngIf="stage === 'result'" class="quiz">
+
+    <!-- PERSONALITY -->
+    <div class="persona">
+
+      <p class="muted small">
+        Your cookie personality
+      </p>
+
+      <h1>{{ persona.name }}</h1>
+
+      <p>{{ persona.blurb }}</p>
+
+    </div>
+
+    <!-- RECOMMENDATIONS -->
+    <div *ngIf="results.length; else noProducts">
+
+      <h2 class="section-title">
+        Your Top {{ results.length }} Cookie Recommendations
+      </h2>
+
+      <!-- ALLERGEN WARNING -->
+      <div
+        *ngIf="!verifiedMatches"
+        class="allergen-warning">
+
+        <strong>⚠️ Ingredient Safety Notice</strong>
+
+        <p>
+          These cookies match your taste preferences,
+          but none have been verified as safe for
+          your selected allergens.
+          Please confirm ingredients with the seller
+          before ordering.
+        </p>
+
+      </div>
+
+      <!-- COOKIE CARDS -->
+      <div class="cookie-grid">
+
+        <app-cookie-card
+          *ngFor="let c of results"
+          [cookie]="c">
+        </app-cookie-card>
+
+      </div>
+
+      <!-- ADD ALL -->
+      <ion-button
+        *ngIf="verifiedMatches"
+        expand="block"
+        shape="round"
+        (click)="addAll()"
+        [disabled]="!canAddAll">
+
+        Add All to Cart
+
+      </ion-button>
+
+    </div>
+
+    <!-- EMPTY CATALOG -->
+    <ng-template #noProducts>
+
+      <div class="empty">
+
+        <span>🍪</span>
+
+        <h3>No cookies available yet</h3>
+
+        <p>
+          Our cookie catalog is currently empty.
+          Please check again later.
+        </p>
+
+      </div>
+
+    </ng-template>
+
+    <!-- RETAKE -->
+    <ion-button
+      expand="block"
+      fill="clear"
+      (click)="retake()">
+
+      Retake Quiz
+
+    </ion-button>
+
+  </section>
+
+</ion-content>
